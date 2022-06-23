@@ -1,0 +1,35 @@
+<div id="login">
+    <h3 class="text-center text-white pt-5">Login form</h3>
+    <div class="container">
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-6">
+                <div id="login-box" class="col-md-12">
+                    <form id="login-form" [formGroup]="formLogin" (ngSubmit)="login()" class="form">
+                        <h3 class="text-center text-info">Login</h3>
+                        <div class="form-group">
+                            <label for="username" class="text-info">Username:</label><br>
+                            <input type="text" formControlName="username" name="username" id="username" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="text-info">Password:</label><br>
+                            <input type="text" name="password" formControlName="password" id="password" class="form-control">
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox" formControlName="recuerda"></span></label><br><br>
+                            <button type="submit" class="boton btn btn-md text-uppercase btn-rounded">Login</button>
+                        </div>
+
+                        <!--<div id="register-link" class="text-right">
+                            <a href="#" class="text-info">Register here</a>
+                        </div>-->
+                    </form>
+                    <div class="alert alert-danger alert-dismissible" role="alert" *ngIf="error">
+                        {{mensajeError}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
