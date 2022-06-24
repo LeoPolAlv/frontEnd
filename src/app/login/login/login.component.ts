@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
           localStorage.removeItem('ResSalRbr');
         }
         //Si todo fue bien navegamos a la pagina principal
-        this.router.navigateByUrl("/");
+        this.router.navigateByUrl("");
       }
     })
     )
