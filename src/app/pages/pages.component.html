@@ -1,6 +1,6 @@
-<div class="container-fluid">
-    <app-header></app-header>
-    <!-- sidebar de la pagina-->
+<!-- Opcion primera-->
+<!--<div class="container-fluid">
+    <app-header [usertoken]="userToken"></app-header>
     <div class="row flex-nowrap">
         <div class="col-auto px-0">
             <app-sidebar> </app-sidebar>
@@ -10,4 +10,8 @@
             <router-outlet></router-outlet>
         </main>
     </div>
-</div>
+</div>-->
+
+<!-- Opcion Segunda-->
+<app-sidebar [userToken]="userToken"></app-sidebar>
+<router-outlet></router-outlet>

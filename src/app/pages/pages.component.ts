@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UsuarioService } from '../services/usuario.service';
 
 @Component({
   selector: 'app-pages',
@@ -7,7 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PagesComponent implements OnInit {
 
-  constructor() { }
+  public userToken!: string;
+
+  constructor(
+    private usuarioService: UsuarioService,
+  ) {
+     //console.log('Existe Token? ',this.usuarioService.vaidarToken());
+     //console.log('Usuario Token ',this.usuarioService.getusuario());
+     //console.log('Role Token ',this.usuarioService.getRol());
+     this.userToken = this.usuarioService.getusuario();
+   }
 
   ngOnInit(): void {
   }

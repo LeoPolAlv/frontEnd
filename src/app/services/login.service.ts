@@ -20,4 +20,8 @@ export class LoginService {
     //console.log('--LOGIN: ', loginUsuario);
     return this.httpClient.post<LoginUsuario>(this.authURL, loginUsuario);
   }
+
+  public logout(){
+    localStorage.removeItem('TKResSl');
+  }  
 }

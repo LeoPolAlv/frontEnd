@@ -42,8 +42,9 @@ export class LoginComponent implements OnInit {
     this.error = false;
     const loginUser = new LoginUsuario(this.formLogin.get('username')?.value,this.formLogin.get('password')?.value)
     this.loginService.login(loginUser).subscribe(({
-      next: (resp: any) => { 
-        localStorage.setItem('TKResSl',resp.token); 
+      next: async (resp: any) => { 
+        //console.log('Creamos el token en LOGIN');
+        await localStorage.setItem('TKResSl',resp.token); 
       },
       error: (err) => {
         this.mensajeError = 'Usuario NO autorizado';

@@ -1,1 +1,13 @@
-<p>home works!</p>
+<div id="mapa-mapbox" class="mx-4"></div>
+<!-- component.html -->
+<div #popupContainer class="popup-container">
+    <div *ngIf="ptnPopup">
+        <!--<img [src]="popup.profile_picture" width="150">-->
+        <b style="text-align: center;">{{ title }}</b><br>
+        <b style="text-align: center;">{{ direccion }}</b><br>
+        <!--<i>{{ popup.location.address }}</i><br>-->
+        <button class="botonReserva">
+            <a routerLink='./prueba/{{oficina}}' class="textoBtnReserva">Iniciar Reserva</a>
+        </button>
+    </div>
+</div>

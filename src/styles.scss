@@ -1,1 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    width: 100%;
+    height: 91%;
+}
+
+.marker {
+    background-image: url("./assets/images/marker-icons/mapbox-marker-icon-20px-red.png");
+    //background-image: url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png') !important;
+    background-size: cover !important;
+    width: 20px;
+    height: 35px;
+    //border-radius: 50%;
+    cursor: pointer;
+    //z-index: 1;
+}
+
+.mapboxgl-popup {
+    max-width: 200px;
+}
+
+.mapboxgl-popup-content {
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+}
