@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -8,6 +8,7 @@ import { LoginModule } from './login/login.module';
 import { SharedModule } from './shared/shared.module';
 import { PagesModule } from './pages/pages.module';
 import { NoFoundPageComponent } from './no-found-page/no-found-page.component';
+import { ReservasService } from './interceptors/reservas.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,12 @@ import { NoFoundPageComponent } from './no-found-page/no-found-page.component';
     PagesModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, 
+      useClass: ReservasService, 
+      multi: true
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

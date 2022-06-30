@@ -5,7 +5,10 @@ import * as Mapboxgl from 'mapbox-gl';
 import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 //import  '@mapbox/mapbox-gl-geocoder/dist/';
 import { Router } from '@angular/router';
-import { GeoJson } from 'src/app/interfaces/geo-json';
+import { Feature, GeoJson, Geometry } from 'src/app/interfaces/geo-json';
+import { OficinasService } from 'src/app/services/oficinas.service';
+import { Oficinas } from '../../interfaces/responses';
+import { Properties } from '../../interfaces/geo-json';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +19,7 @@ export class HomeComponent implements OnInit {
 
   @ViewChild("popupContainer") popupContainer: any;
 
+  private oficinas!: any;
   public ptnPopup: boolean= false;
   public title: string = '';
   public direccion: string = '';
@@ -23,7 +27,9 @@ export class HomeComponent implements OnInit {
 
   public mapa!: Mapboxgl.Map;
 
-  public  geojson: any = {
+  public  geojson!: any ;
+  private geoJsonAux!: GeoJson;
+  /*{
     'type': 'FeatureCollection',
     'features': [
         {
@@ -51,19 +57,32 @@ export class HomeComponent implements OnInit {
           }
         }
       ]
-    };
+    };*/
 
   constructor(
     private router: Router,
+    private oficinasService: OficinasService,
   ) { 
     console.log('Constructor de Home');
+    
   }
 
   ngOnInit(): void {
     
     this.crearMapa();
+    this.cargarOficinas()
     this.cargarDatosMapa();
     this.mostrarPopup();
+    
+  }
+
+  cargarOficinas(){
+    this.oficinasService.obtenerOficinas().subscribe((oficinas: Oficinas) => {
+      console.log('Oficnas que obtengo', oficinas);
+      //const oficinasAux: Oficinas[] = [];
+      //oficinasAux.push(oficinas);
+      this.cargarJsonGeo(oficinas);
+    });
     
   }
 
@@ -80,6 +99,7 @@ export class HomeComponent implements OnInit {
     this.mapa.addControl(new MapboxGeocoder({
       accessToken: environment.mapboxKey,
       //mapboxgl: Mapboxgl
+      marker: false
     }));
 
      // Add zoom and rotation controls to the map.
@@ -93,26 +113,37 @@ export class HomeComponent implements OnInit {
      }));
   }
 
-  /*cargarDatosMapa(){
-    // add markers to map
-    for (const feature of this.geojson.features) {
-      // create a HTML element for each feature
-      const el = document.createElement('div');
-      el.className = 'marker';
+  cargarJsonGeo(oficinas: any){
+
+    //Cargamos la vble que nos cargan los elementos en el mapa
+    let arrayAux: any[] = [];
+
+    oficinas.forEach((oficina: Oficinas,ind: number) => {
       
-      // make a marker for each feature and add to the map
-      new Mapboxgl.Marker(el)
-      .setLngLat(feature.geometry.coordinates)
-      .setPopup(
-          new Mapboxgl
-            .Popup({ offset: 25 }) // add popups
-            .setHTML(
-              `<h4>${feature.properties.title}</h4><p>${feature.properties.description}</p>`
-            )
-        )
-      .addTo(this.mapa);
+      let geoJsonGeometry: Geometry = {
+        type: 'Point',
+        coordinates: [parseFloat(oficina.longitud),parseFloat(oficina.latitud)]
+      };
+
+      let geoJsonProperties: Properties = {
+        //title: oficina.officename,
+        title: '',
+        direccion: `${oficina.direccion}, ${oficina.localidad}`,
+        oficina: oficina.provincia
+      } 
+
+      let geoJsonFeature: Feature = {
+        type:  'Feature',
+        geometry: geoJsonGeometry,
+        properties: geoJsonProperties
+      };
+      arrayAux.push(geoJsonFeature);
+    });
+    this.geojson = {
+      type: 'FeatureCollection',
+      features: arrayAux
     }
-  }*/
+  }
 
   cargarDatosMapa(){
     this.mapa.on('load', () => {

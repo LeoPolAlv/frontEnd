@@ -3,19 +3,19 @@ export interface GeoJson {
   features: Feature[];
 }
 
-interface Feature {
+export interface Feature {
   type: string;
   geometry: Geometry;
   properties: Properties;
 }
 
-interface Properties {
+export interface Properties {
   title: string;
   direccion: string;
   oficina: string;
 }
 
-interface Geometry {
+export interface Geometry {
   type: string;
   coordinates: number[];
 }
