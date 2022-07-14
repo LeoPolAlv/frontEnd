@@ -1,0 +1,22 @@
+<div class="container-fluid encuadrar">
+    <form [formGroup]="altaReservaForm" class="form">
+        <div class="row">
+            <div class="mb-3 col form-floating">
+                <input class="form-control" type="text" formControlName="pais" name="pais" id="floatingInputPais">
+                <label for="floatingInputPais">Pais</label>
+            </div>
+            <div class="mb-3 col form-floating">
+                <input class="form-control" id="floatingInputOfic" formControlName="oficina" name="oficina" type="text">
+                <label for="floatingInputOfic">Oficina</label>
+            </div>
+            <div class="mb-3 col form-floating">
+                <select #selectSala class="form-select" id="floatingSelect" formControlName="sala" name="sala" aria-label="Floating label select example">
+                    <option *ngFor="let sala of salas"  [value]="sala.idroom"> {{ sala.roomName }} </option>
+                </select>
+                <label for="floatingSelect">Salas</label>
+            </div>
+        </div>
+        <!--<app-calendario-reservas [salaReserva]="salaSeleccionada" *ngIf="!disableCalendar"></app-calendario-reservas>-->
+        <app-calendario-reservas id="calendarReservas" [userReserva]="usuario"></app-calendario-reservas>
+    </form>
+</div>

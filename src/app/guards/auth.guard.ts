@@ -15,14 +15,14 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot):  boolean | UrlTree {
-      console.log('Comprobamos guard');
+      //console.log('Comprobamos guard');
       //console.log('Validamos token en guard: ', this.usuarioService.vaidarToken());
       if(!this.usuarioService.vaidarToken()){
         this.router.navigateByUrl('/login');
-        console.log('false');
+        //console.log('false');
         return false;
       }
-      console.log('true');
+      //console.log('true');
       return true;
   }
   

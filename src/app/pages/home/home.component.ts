@@ -4,11 +4,13 @@ import { environment } from 'src/environments/environment';
 import * as Mapboxgl from 'mapbox-gl';
 import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 //import  '@mapbox/mapbox-gl-geocoder/dist/';
-import { Router } from '@angular/router';
+//import { Router } from '@angular/router';
 import { Feature, GeoJson, Geometry } from 'src/app/interfaces/geo-json';
 import { OficinasService } from 'src/app/services/oficinas.service';
-import { Oficinas } from '../../interfaces/responses';
+import { Oficinas, Pais } from '../../interfaces/responses';
 import { Properties } from '../../interfaces/geo-json';
+import { Router } from '@angular/router';
+import { RequestNewReserva } from 'src/app/interfaces/request';
 
 @Component({
   selector: 'app-home',
@@ -19,16 +21,18 @@ export class HomeComponent implements OnInit {
 
   @ViewChild("popupContainer") popupContainer: any;
 
-  private oficinas!: any;
+  //private oficinas!: any;
   public ptnPopup: boolean= false;
   public title: string = '';
   public direccion: string = '';
   public oficina: string = '';
+  public paisName: string = '';
+  public idOficina: number = 0;
 
   public mapa!: Mapboxgl.Map;
 
   public  geojson!: any ;
-  private geoJsonAux!: GeoJson;
+  //private geoJsonAux!: GeoJson;
   /*{
     'type': 'FeatureCollection',
     'features': [
@@ -60,11 +64,11 @@ export class HomeComponent implements OnInit {
     };*/
 
   constructor(
-    private router: Router,
+    //private router: Router,
     private oficinasService: OficinasService,
+    private router: Router,
   ) { 
-    console.log('Constructor de Home');
-    
+    //console.log('Constructor de Home');
   }
 
   ngOnInit(): void {
@@ -78,7 +82,7 @@ export class HomeComponent implements OnInit {
 
   cargarOficinas(){
     this.oficinasService.obtenerOficinas().subscribe((oficinas: Oficinas) => {
-      console.log('Oficnas que obtengo', oficinas);
+      //console.log('Oficnas que obtengo', oficinas);
       //const oficinasAux: Oficinas[] = [];
       //oficinasAux.push(oficinas);
       this.cargarJsonGeo(oficinas);
@@ -118,7 +122,7 @@ export class HomeComponent implements OnInit {
     //Cargamos la vble que nos cargan los elementos en el mapa
     let arrayAux: any[] = [];
 
-    oficinas.forEach((oficina: Oficinas,ind: number) => {
+    oficinas.forEach((oficina: Oficinas) => {
       
       let geoJsonGeometry: Geometry = {
         type: 'Point',
@@ -126,9 +130,9 @@ export class HomeComponent implements OnInit {
       };
 
       let geoJsonProperties: Properties = {
-        //title: oficina.officename,
-        title: '',
-        direccion: `${oficina.direccion}, ${oficina.localidad}`,
+        title: oficina.officename,
+        id: oficina.idoffice,
+        direccion: `${oficina.direccion}, ${oficina.localidad}. ${oficina.provincia}`,
         oficina: oficina.provincia
       } 
 
@@ -143,6 +147,7 @@ export class HomeComponent implements OnInit {
       type: 'FeatureCollection',
       features: arrayAux
     }
+    //console.log('GeoJson ue obtengo: ', this.geojson);
   }
 
   cargarDatosMapa(){
@@ -164,7 +169,7 @@ export class HomeComponent implements OnInit {
             'layout': {
                 'icon-image': 'marker',
                 // get the title name from the source's "title" property
-                'text-field': ['get', 'title'],
+                //'text-field': ['get', 'title'],
                 'text-font': [
                   'Open Sans Semibold',
                   'Arial Unicode MS Bold'
@@ -187,7 +192,7 @@ export class HomeComponent implements OnInit {
     });
 
     this.mapa.on('click', 'points', (e: any) => {
-        console.log('MouseEnter');
+        //console.log('MouseEnter');
         // Change the cursor style as a UI indicator.
         this.mapa.getCanvas().style.cursor = 'pointer';
          this.ptnPopup = true;
@@ -196,7 +201,12 @@ export class HomeComponent implements OnInit {
         this.title = e.features[0].properties.title;
         this.direccion = e.features[0].properties.direccion;
         this.oficina = e.features[0].properties.oficina;
-         
+        this.idOficina = e.features[0].properties.id;
+        this.oficinasService.obtenerPais(this.idOficina)
+              .subscribe((pais: Pais) => {
+                //console.log('Pais que obtengo: ', pais);
+                this.paisName = pais.countryName
+              });
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
         // over the copy being pointed to.
@@ -220,5 +230,14 @@ export class HomeComponent implements OnInit {
       this.mapa.on('mouseleave', 'points', () => {
         this.mapa.getCanvas().style.cursor = '';
       });
+  }
+
+  nuevaReserva(){
+    let requestNewReserva: RequestNewReserva = {
+      pais: this.paisName,
+      oficina: this.idOficina
+    }
+    this.router.navigate(['main/new',requestNewReserva]);
+    //console.log('Click para empezar reserva');
   }
 }

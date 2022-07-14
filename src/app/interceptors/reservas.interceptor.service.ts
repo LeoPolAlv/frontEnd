@@ -8,7 +8,7 @@ import { UsuarioService } from '../services/usuario.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ReservasService implements HttpInterceptor{
+export class ReservasInterceptorService implements HttpInterceptor{
 
   constructor(
     private usuarioService: UsuarioService,
@@ -26,7 +26,7 @@ export class ReservasService implements HttpInterceptor{
       //Clonamos el token y lo mandamos en la cabecera de todas las peticiones HTTP
       //Autorizaciòn de tipo Bearer + token
       authReq = req.clone({setHeaders: {'Authorization': `Bearer ${token}`}});
-      console.log("Theaders enviadas: ", authReq);
+      //console.log("Theaders enviadas: ", authReq);
     }
 
     //En caso que el token nos devuelva el no autorizado redirigimos a la pagina de login
@@ -36,8 +36,11 @@ export class ReservasService implements HttpInterceptor{
         if (err.status === 401) {
           this.loginService.logout();
           this.router.navigate(['login']);
-        } 
-        return throwError( () => new Error(err.message));
+          throw 'No tenemos permiso de acceso. Hay que loguearse'
+        } else {
+          throw 'Error: ' + err.message;
+        }
+        //return throwError( () => new Error(err.message));
       })
     );
   }

@@ -6,8 +6,8 @@
         <b style="text-align: center;">{{ title }}</b><br>
         <b style="text-align: center;">{{ direccion }}</b><br>
         <!--<i>{{ popup.location.address }}</i><br>-->
-        <button class="botonReserva">
-            <a routerLink='./prueba/{{oficina}}' class="textoBtnReserva">Iniciar Reserva</a>
+        <button class="botonReserva" (click)="nuevaReserva()">
+            <!--<a routerLink='./prueba/{{paisName}}/{{idOficina}}' class="textoBtnReserva">-->Iniciar Reserva<!-- </a>-->
         </button>
     </div>
 </div>

@@ -11,6 +11,7 @@ export interface Feature {
 
 export interface Properties {
   title: string;
+  id: number;
   direccion: string;
   oficina: string;
 }

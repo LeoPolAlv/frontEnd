@@ -7,10 +7,10 @@ import { NoFoundPageComponent } from './no-found-page/no-found-page.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/main' },
-  {
+  /*{
     path: 'login', 
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
-  },
+  },*/
   { path: '**', component: NoFoundPageComponent },
 ];
 
