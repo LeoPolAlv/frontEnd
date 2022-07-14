@@ -3,12 +3,14 @@ import { startOfDay,endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMon
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarDayViewBeforeRenderEvent, CalendarEvent, CalendarEventAction,CalendarEventTimesChangedEvent, CalendarEventTimesChangedEventType, CalendarMonthViewDay, CalendarView, CalendarWeekViewBeforeRenderEvent} from 'angular-calendar';
+import { } from 'date-fns';
+
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { ReservasService } from '../../services/reservas.service';
 import { Reservas } from '../../interfaces/responses';
-import { } from 'date-fns';
-import { AltaReserva } from 'src/app/interfaces/request';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SalasService } from 'src/app/services/salas.service';
+import { AltaReserva, PutFechaReserva } from 'src/app/interfaces/request';
+import { SalasService } from '../../services/salas.service';
 
 const colors: any = {
   inactivo: {
@@ -344,7 +346,7 @@ export class CalendarioReservasComponent implements OnInit{
     }
   }
 
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+  /*dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -356,7 +358,7 @@ export class CalendarioReservasComponent implements OnInit{
       }
       this.viewDate = date;
     }
-  }
+  }*/
 
   //Añadimos un evento en el calendario en vistas week y day
   clickSegmento(evento: any){
@@ -389,6 +391,7 @@ export class CalendarioReservasComponent implements OnInit{
 
   eventTimesChanged( cambioFechaEvent: CalendarEventTimesChangedEvent): void {
     this.inicializarForm();
+    console.log('Evento cambia de hora:', cambioFechaEvent);
     const {event, newStart, newEnd} = cambioFechaEvent;
     delete cambioFechaEvent.event.cssClass;
     this.events = this.events.map((iEvent) => {
@@ -408,6 +411,8 @@ export class CalendarioReservasComponent implements OnInit{
         if ((iEvent === event) && (this.validateEventTimesChanged(cambioFechaEvent, false))){
           this.altaReservaForm.controls['fechaHasta'].setValue(newEnd);
           this.altaReservaForm.controls['fechaReserva'].setValue(newStart);
+          //TODO: Aqui actualizamos el evento nuevo ya que ha pasado todas las validaciones.
+          this.actualizoFechasReserva(newStart, newEnd!, event.id!);
           return {
             ...event,
             start: newStart,
@@ -455,6 +460,21 @@ export class CalendarioReservasComponent implements OnInit{
 
   handleNewReserva() {
     this.modal.open(this.modalAltaReserva, { size: 'lg' });
+  }
+
+  //Al mover o arrastrar una reserva del calendario se modifican las fechas de inici y fin de la reserva concreta.
+  actualizoFechasReserva(newStart: Date, newEnd: Date, id: string | number){
+    let nuevaData: PutFechaReserva = {
+      fechaReserva: newStart,
+      fechaHasta: newEnd,
+      reservaId: id
+    }
+
+    this.reservasService.modifFechasReserva(nuevaData)
+       .subscribe({
+         next: (resp:any) => console.log('Respuesta de la actualizacion',resp),
+         error: (err) => console.log('Error al actualizar las fechas de la reserva. ', err)
+       });
   }
 
   deleteEvent(eventToDelete: CalendarEvent) {

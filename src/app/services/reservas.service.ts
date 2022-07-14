@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Reservas } from '../interfaces/responses';
-import { AltaReserva } from '../interfaces/request';
+import { AltaReserva, PutFechaReserva } from '../interfaces/request';
 
 
 const URL = environment.url;
@@ -16,7 +16,7 @@ export class ReservasService {
     private http: HttpClient,
   ) { }
 
-  buscarReservas(sala: number){
+  public buscarReservas(sala: number){
     //console.log('sala en servicio: ', sala);
     const url_acceso = `${URL}/reserva/findbysala/${sala}`
     return this.http.get<Reservas>(url_acceso);
@@ -25,5 +25,10 @@ export class ReservasService {
   public altaReserva(reserva: AltaReserva){
     let url = `${URL}/reserva/new`;
     return this.http.post(url,reserva);
+  }
+
+  public modifFechasReserva(nuevasFechas: PutFechaReserva){
+    let url = `${URL}/reserva/nuevafecha`;
+    return this.http.put(url,nuevasFechas);
   }
 }

@@ -17,7 +17,7 @@ export class ReservasInterceptorService implements HttpInterceptor{
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    //console.log('Entermos en el interceptor');
+    console.log('Entermos en el interceptor');
     let authReq: HttpRequest<any> = req;
     const token = this.usuarioService.getToken();
     //console.log('Recuperamos el token: ', token);
@@ -38,7 +38,7 @@ export class ReservasInterceptorService implements HttpInterceptor{
           this.router.navigate(['login']);
           throw 'No tenemos permiso de acceso. Hay que loguearse'
         } else {
-          throw 'Error: ' + err.message;
+          throw 'Error-Interceptor: ' + err.message + err.status;
         }
         //return throwError( () => new Error(err.message));
       })

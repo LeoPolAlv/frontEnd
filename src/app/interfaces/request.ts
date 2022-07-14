@@ -11,3 +11,9 @@ export interface RequestNewReserva  {
     titulo: string;
     descripcion: string;
   }
+
+  export interface PutFechaReserva {
+    fechaReserva: Date;
+	  fechaHasta: Date;
+	  reservaId: string | number;
+  }
