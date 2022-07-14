@@ -3,12 +3,12 @@ import { startOfDay,endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMon
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarDayViewBeforeRenderEvent, CalendarEvent, CalendarEventAction,CalendarEventTimesChangedEvent, CalendarEventTimesChangedEventType, CalendarMonthViewDay, CalendarView, CalendarWeekViewBeforeRenderEvent} from 'angular-calendar';
-import { SalasService } from '../../services/salas.service';
 import { ReservasService } from '../../services/reservas.service';
 import { Reservas } from '../../interfaces/responses';
 import { } from 'date-fns';
 import { AltaReserva } from 'src/app/interfaces/request';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SalasService } from 'src/app/services/salas.service';
 
 const colors: any = {
   inactivo: {
