@@ -1,3 +1,4 @@
+import { NgSwitch } from '@angular/common';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -17,7 +18,8 @@ export class ReservasInterceptorService implements HttpInterceptor{
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('Entermos en el interceptor');
+    console.log('******** Entramos en el interceptor *************');
+    
     let authReq: HttpRequest<any> = req;
     const token = this.usuarioService.getToken();
     //console.log('Recuperamos el token: ', token);
@@ -29,18 +31,25 @@ export class ReservasInterceptorService implements HttpInterceptor{
       //console.log("Theaders enviadas: ", authReq);
     }
 
-    //En caso que el token nos devuelva el no autorizado redirigimos a la pagina de login
-    // console.log('Request enviada: ', req);
+    // Evaluamos los posibles errores que nos envia o genera la comunicacion con el servidor.
     return next.handle(authReq).pipe(
       catchError((err: HttpErrorResponse) => {
-        if (err.status === 401) {
-          this.loginService.logout();
-          this.router.navigate(['login']);
-          throw 'No tenemos permiso de acceso. Hay que loguearse'
-        } else {
-          throw 'Error-Interceptor: ' + err.message + err.status;
+        switch (err.status) {
+          case 0:
+            this.loginService.logout();
+            //this.router.navigate(['login']);
+            throw 'No podemos conectar con el servidor'
+            //break;
+          case 401:  //En caso que el token nos devuelva el no autorizado redirigimos a la pagina de login
+            this.loginService.logout();
+            this.router.navigate(['login']);
+            throw 'No tenemos permiso de acceso. Hay que loguearse'
+            //break;
+
+          default:
+            throw `${err.status}: ${err.message}`;
+            //break;
         }
-        //return throwError( () => new Error(err.message));
       })
     );
   }

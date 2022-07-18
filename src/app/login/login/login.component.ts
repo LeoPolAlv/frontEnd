@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ErrorHandler, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../../services/login.service';
 import { LoginUsuario } from '../../models/login.model';
@@ -47,7 +47,8 @@ export class LoginComponent implements OnInit {
         await localStorage.setItem('TKResSl',resp.token); 
       },
       error: (err) => {
-        this.mensajeError = 'Usuario NO autorizado';
+        console.log('Error en LOGIN: ', err);
+        this.mensajeError = err;
         this.error = true;
       },
       complete: () => {

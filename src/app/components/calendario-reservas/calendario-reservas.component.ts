@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild, TemplateRef, ViewEncapsulation, Input} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild, TemplateRef, ViewEncapsulation, Input, ErrorHandler} from '@angular/core';
 import { startOfDay,endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addYears, subMonths,addMonths, addWeeks,subWeeks, startOfMonth,startOfWeek,endOfWeek} from 'date-fns';
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -473,7 +473,7 @@ export class CalendarioReservasComponent implements OnInit{
     this.reservasService.modifFechasReserva(nuevaData)
        .subscribe({
          next: (resp:any) => console.log('Respuesta de la actualizacion',resp),
-         error: (err) => console.log('Error al actualizar las fechas de la reserva. ', err)
+         error: (err: any) => console.log('Error al actualizar las fechas de la reserva. ', err)
        });
   }
 
