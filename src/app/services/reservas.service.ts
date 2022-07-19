@@ -31,4 +31,9 @@ export class ReservasService {
     let url = `${URL}/reserva/nuevafecha`;
     return this.http.put(url,nuevasFechas);
   }
+
+  public borrarReserva(idReserva: any) {
+    let url = `${URL}/reserva/delete/${idReserva}`;
+    return this.http.delete(url);
+  }
 }

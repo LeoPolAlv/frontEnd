@@ -133,13 +133,15 @@
 
             <!--<div>
                 <label for="fechaDesde" class="form-label">Comienza: </label>
-                <input id="fechaDesde" class="form-control" type="text" value="Readonly input here..." aria-label="readonly input example" readonly formControlName="fechaReserva">
+                <input id="fechaDesde" class="form-control" type="hidden" value="Readonly input here..." aria-label="readonly input example" readonly formControlName="fechaReserva">
+                <input class="form-control" type="hidden" formControlName="dasUser">
+                <input class="form-control" type="hidden" formControlName="roomId">
                 <label for="fechaFin" class="form-label">Finaliza: </label>
-                <input id="fechaDesde" class="form-control" type="text" value="Readonly input here..." aria-label="readonly input example" readonly formControlName="fechaHasta">
+                <input id="fechaDesde" class="form-control" type="hidden" value="Readonly input here..." aria-label="readonly input example" readonly formControlName="fechaHasta">
             </div>-->
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-outline-secondary"><!-- [disabled]="altaReservaForm.invalid">-->
+            <button type="submit" class="btn btn-outline-secondary" [disabled]="altaReservaForm.invalid">
         Reservar
       </button>
         </div>

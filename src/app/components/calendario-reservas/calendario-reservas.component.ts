@@ -129,8 +129,9 @@ export class CalendarioReservasComponent implements OnInit{
       label: '<i class="fas fa-fw fa-trash-alt"></i>',
       a11yLabel: 'Delete',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter((iEvent) => iEvent !== event);
-        this.handleEvent('Deleted', event);
+        this.deleteEvent(event);
+        //this.events = this.events.filter((iEvent) => iEvent !== event);
+        //this.handleEvent('Deleted', event);
       },
     }
   ];
@@ -149,6 +150,7 @@ export class CalendarioReservasComponent implements OnInit{
   public clickedDate: Date = new Date();
   
   public activeDayIsOpen: boolean = true;
+  private newEvento: boolean = false;
 
   constructor(
     private modal: NgbModal,
@@ -179,7 +181,7 @@ export class CalendarioReservasComponent implements OnInit{
   crearFormulario(){
     this.altaReservaForm = this.fb.group({
       roomId:['', Validators.required],
-      dasUser: [this.userReserva.usuario, Validators.required],
+      dasUser: ['', Validators.required],
       fechaReserva:['', Validators.required],
       fechaHasta:['', Validators.required],
       titulo:['', Validators.required],
@@ -188,13 +190,18 @@ export class CalendarioReservasComponent implements OnInit{
   }
 
   inicializarForm(){
+    this.altaReservaForm.controls['roomId'].setValue(this.salaSeleccionada);
+    this.altaReservaForm.controls['dasUser'].setValue(this.userReserva.usuario);
     this.altaReservaForm.controls['titulo'].setValue('');
     this.altaReservaForm.controls['descripcion'].setValue('');
     this.altaReservaForm.controls['fechaReserva'].setValue('');
     this.altaReservaForm.controls['fechaHasta'].setValue('');
   }
   
-  buscarReservas(sala: number){
+  buscarReservas(sala: number) {
+    //Le indicamos que no hay nuevos eventos a tratar.
+    this.newEvento = false;
+    
     this.reservasService.buscarReservas(sala)
           .subscribe((reservas: any)=>{
             console.log('Reservas por sala: ', reservas)
@@ -203,18 +210,18 @@ export class CalendarioReservasComponent implements OnInit{
   }
 
   altaReserva(){
-    this.altaReservaForm.controls['roomId'].setValue(this.salaSeleccionada);
+    //this.altaReservaForm.controls['roomId'].setValue(this.salaSeleccionada);
     console.log('Formulario que envio a dar de alta: ', this.altaReservaForm.value);
     this.reservasService.altaReserva(this.altaReservaForm.value)
-         .subscribe({
-           next: (resp) => {
-            console.log('Respuesta del alta de reserva: ', resp);
-             this.inicializarForm();
-             this.modal.dismissAll();
-             this.buscarReservas(this.salaSeleccionada);
-           },
-           error: (err) => console.log('Error en el alta de reserva: ', err)
-         })
+      .subscribe({
+        next: (resp) => {
+          console.log('Respuesta del alta de reserva: ', resp);
+          this.inicializarForm();
+          this.modal.dismissAll();
+          this.buscarReservas(this.salaSeleccionada);
+        },
+        error: (err) => console.log('Error en el alta de reserva: ', err)
+      });
   }
 
   cargarReservasSala(reservasSala: any){
@@ -412,7 +419,9 @@ export class CalendarioReservasComponent implements OnInit{
           this.altaReservaForm.controls['fechaHasta'].setValue(newEnd);
           this.altaReservaForm.controls['fechaReserva'].setValue(newStart);
           //TODO: Aqui actualizamos el evento nuevo ya que ha pasado todas las validaciones.
-          this.actualizoFechasReserva(newStart, newEnd!, event.id!);
+          if (!this.newEvento) {
+            this.actualizoFechasReserva(newStart, newEnd!, event.id!);
+          }
           return {
             ...event,
             start: newStart,
@@ -432,6 +441,7 @@ export class CalendarioReservasComponent implements OnInit{
   }
 
   addEvent(fechaComienzo: Date): void {
+    this.newEvento = true
     this.inicializarForm();
 
     const fechaInicio = new Date(fechaComienzo);
@@ -439,7 +449,7 @@ export class CalendarioReservasComponent implements OnInit{
     const fechaFin = new Date(fechaInicioAux.setMinutes(fechaComienzo.getMinutes() + 15));
 
     const newEvento = {
-      title: '',
+      title: 'Continua Reserva',
       start: fechaInicio,
       end: fechaFin,
       color: colors.preReserva,
@@ -479,6 +489,11 @@ export class CalendarioReservasComponent implements OnInit{
 
   deleteEvent(eventToDelete: CalendarEvent) {
     this.events = this.events.filter((event) => event !== eventToDelete);
+    this.reservasService.borrarReserva(eventToDelete.id)
+      .subscribe({
+        next: resp => console.log('Data devuelta por delete reserva: ', resp),
+        error: err => console.log('Error al borrar la reserva: ', err)
+      });
   }
 
   setView(view: CalendarView) {
