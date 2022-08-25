@@ -11,6 +11,7 @@ import { Oficinas, Pais } from '../../interfaces/responses';
 import { Properties } from '../../interfaces/geo-json';
 import { Router } from '@angular/router';
 import { RequestNewReserva } from 'src/app/interfaces/request';
+import { PaisService } from 'src/app/services/pais.service';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +27,8 @@ export class HomeComponent implements OnInit {
   public title: string = '';
   public direccion: string = '';
   public oficina: string = '';
-  public paisName: string = '';
+  public paisId: number = 0;
+  public paisNombre: string = '';
   public idOficina: number = 0;
 
   public mapa!: Mapboxgl.Map;
@@ -65,6 +67,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     //private router: Router,
+    private paisService: PaisService,
     private oficinasService: OficinasService,
     private router: Router,
   ) { 
@@ -202,10 +205,11 @@ export class HomeComponent implements OnInit {
         this.direccion = e.features[0].properties.direccion;
         this.oficina = e.features[0].properties.oficina;
         this.idOficina = e.features[0].properties.id;
-        this.oficinasService.obtenerPais(this.idOficina)
+        this.paisService.obtenerPais(this.idOficina)
               .subscribe((pais: Pais) => {
                 //console.log('Pais que obtengo: ', pais);
-                this.paisName = pais.countryName
+                this.paisId = pais.idPais;
+                this.paisNombre = pais.countryName;
               });
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
@@ -234,7 +238,8 @@ export class HomeComponent implements OnInit {
 
   nuevaReserva(){
     let requestNewReserva: RequestNewReserva = {
-      pais: this.paisName,
+      pais: this.paisId,
+      nombrePais: this.paisNombre,
       oficina: this.idOficina
     }
     this.router.navigate(['main/new',requestNewReserva]);

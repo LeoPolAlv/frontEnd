@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
+import { RequestNewReserva } from 'src/app/interfaces/request';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -19,13 +21,24 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  nuevaReserva() {
+    let requestNewReserva: RequestNewReserva = {
+      pais: 0,
+      nombrePais: '',
+      oficina: 0
+    }
+    console.log('nueva reserva desde Sidebar: ', requestNewReserva);
+    //this.router.navigateByUrl('/main', {skipLocationChange: true}).then(() => this.router.navigate(['main/init',requestNewReserva]));
+    this.router.navigateByUrl('/main', {skipLocationChange: true}).then(() => this.router.navigate(['main/init',requestNewReserva]));
+  }
+
+  inicioMapa() {
+    this.router.navigate(['main']);
+  }
+
   async logoOut(){
-    //console.log('LOGOUT');
     await this.loginService.logout();
     this.router.navigateByUrl('/login');
-    //console.log('navegamos al inicio');
-    //this.router.navigate(['/login']);
-    //console.log('navegamos al inicio- despues');
   }
 
 }

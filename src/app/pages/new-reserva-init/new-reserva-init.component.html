@@ -1,0 +1,36 @@
+<div class="container-fluid encuadrar">
+    <form [formGroup]="altaReservaForm" class="form">
+        <div class="row">
+            <div class="mb-3 col form-floating">
+                <select class="form-select" id="floatingSelect" formControlName="pais" name="pais" aria-label="Floating label select example">
+                    <option *ngFor="let pais of paises"  [value]="pais.idPais"> {{ pais.countryName }} </option>
+                </select>
+                <label for="floatingSelect">Pais</label>
+            </div>
+            <!-- Si no tengo oficinas se muestra mensaje de que no hay oficinas definidas en el pais.-->
+            <div class="mb-3 col form-floating" *ngIf="!tengoOficina">
+                <input class="form-control" type="text" value="Sin Oficinas" aria-label="Disabled input example" disabled readonly>
+            </div>
+            <!-- Se muestran las Oficinas que haya en el pais-->
+            <div class="mb-3 col form-floating" *ngIf="tengoOficina">
+                <select class="form-select" id="floatingSelect" formControlName="oficina" name="oficina" aria-label="Floating label select example">
+                    <option *ngFor="let oficina of oficinasPais"  [value]="oficina.idoffice"> {{ oficina.officename }} - {{ oficina.localidad }} </option>
+                </select>
+                <label for="floatingSelect">Oficina</label>
+            </div>
+            <!-- Si no tengo oficinas tampoco tengo salas que mostrar-->
+            <div class="mb-3 col form-floating" *ngIf="!tengoOficina || !tengoSalas">
+                <input class="form-control" type="text" value="Sin Salas" aria-label="Disabled input example" disabled readonly>
+            </div>
+            <!-- Se muestran las salas que haya en la oficina-->
+            <div class="mb-3 col form-floating" *ngIf="tengoOficina && tengoSalas">
+                <select class="form-select" id="floatingSelect" formControlName="sala" name="sala" aria-label="Floating label select example">
+                    <option *ngFor="let sala of salas"  [value]="sala.idroom"> {{ sala.roomName }} </option>
+                </select>
+                <label for="floatingSelect">Salas</label>
+            </div>
+        </div>
+        <app-calendario-reservas id="calendarReservas" [userReserva]="usuario"></app-calendario-reservas>
+        <!--<app-calendario-reservas [salaReserva]="salaSeleccionada" *ngIf="!disableCalendar"></app-calendario-reservas>-->
+    </form>
+</div>

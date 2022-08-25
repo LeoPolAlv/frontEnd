@@ -49,3 +49,8 @@ export interface Reservas {
   fechaReserva: string;
   fechaHasta: string;
 }
+
+export interface Pais {
+  idPais: number;
+  countryName: string;
+}

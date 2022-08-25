@@ -1,5 +1,6 @@
 export interface RequestNewReserva  {
-    pais: string,
+    pais: number,
+    nombrePais: string,
     oficina: number
   }
 

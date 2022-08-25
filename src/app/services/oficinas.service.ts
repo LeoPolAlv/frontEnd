@@ -24,14 +24,13 @@ export class OficinasService {
     return this.http.get<Oficinas>(url_acceso);
   }
 
-  obtenerPais(id: number){
-    //console.log('id servicio: ', id);
-    const url_acceso = `${URL}/pais/${id}`
-    return this.http.get<Pais>(url_acceso);
-  }
-
   obtenerSalasOficina(id: number){
     const url_acceso = `${URL}/room/findrooms/${id}`
     return this.http.get<Room>(url_acceso);
+  }
+
+  obtenerOficinasPais(id: number) {
+    const url_acceso = `${URL}/oficinas/country/${id}`
+    return this.http.get<Oficinas>(url_acceso);
   }
 }

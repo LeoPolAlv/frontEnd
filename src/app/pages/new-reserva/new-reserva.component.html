@@ -2,11 +2,13 @@
     <form [formGroup]="altaReservaForm" class="form">
         <div class="row">
             <div class="mb-3 col form-floating">
-                <input class="form-control" type="text" formControlName="pais" name="pais" id="floatingInputPais">
-                <label for="floatingInputPais">Pais</label>
+                <!--*ngIf="tengoOficina">-->
+                <input class="form-control" id="floatingInputPais" [value]="paisSeleccionado" formControlName="pais" name="pais" type="text">
+                <label for="floatingInputOfic">Pais</label>
             </div>
             <div class="mb-3 col form-floating">
-                <input class="form-control" id="floatingInputOfic" formControlName="oficina" name="oficina" type="text">
+                <!--*ngIf="tengoOficina">-->
+                <input class="form-control" id="floatingInputOfic" [value]="nomOficina" formControlName="oficina" name="oficina" type="text">
                 <label for="floatingInputOfic">Oficina</label>
             </div>
             <div class="mb-3 col form-floating">
@@ -16,7 +18,7 @@
                 <label for="floatingSelect">Salas</label>
             </div>
         </div>
-        <!--<app-calendario-reservas [salaReserva]="salaSeleccionada" *ngIf="!disableCalendar"></app-calendario-reservas>-->
         <app-calendario-reservas id="calendarReservas" [userReserva]="usuario"></app-calendario-reservas>
+        <!--<app-calendario-reservas [salaReserva]="salaSeleccionada" *ngIf="!disableCalendar"></app-calendario-reservas>-->
     </form>
 </div>

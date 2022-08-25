@@ -18,7 +18,7 @@ export class ReservasInterceptorService implements HttpInterceptor{
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('******** Entramos en el interceptor *************');
+    //console.log('******** Entramos en el interceptor *************');
     
     let authReq: HttpRequest<any> = req;
     const token = this.usuarioService.getToken();
