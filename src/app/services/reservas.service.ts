@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Reservas } from '../interfaces/responses';
 import { AltaReserva, PutFechaReserva } from '../interfaces/request';
+import { Data } from '@angular/router';
 
 
 const URL = environment.url;
@@ -22,6 +23,12 @@ export class ReservasService {
     return this.http.get<Reservas>(url_acceso);
   }
 
+  public misReservas(usuario: Data){
+    console.log('Usuario en servicio: ', usuario);
+    const url_acceso = `${URL}/reserva/find/${usuario}`
+    return this.http.get<Reservas>(url_acceso);
+  }
+
   public altaReserva(reserva: AltaReserva){
     let url = `${URL}/reserva/new`;
     return this.http.post(url,reserva);
@@ -37,3 +44,5 @@ export class ReservasService {
     return this.http.delete(url);
   }
 }
+
+

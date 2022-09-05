@@ -22,14 +22,19 @@ export class SidebarComponent implements OnInit {
   }
 
   nuevaReserva() {
-    let requestNewReserva: RequestNewReserva = {
+    /*let requestNewReserva: RequestNewReserva = {
       pais: 0,
       nombrePais: '',
       oficina: 0
-    }
-    console.log('nueva reserva desde Sidebar: ', requestNewReserva);
+    }*/
+    //console.log('nueva reserva desde Sidebar: ', requestNewReserva);
     //this.router.navigateByUrl('/main', {skipLocationChange: true}).then(() => this.router.navigate(['main/init',requestNewReserva]));
-    this.router.navigateByUrl('/main', {skipLocationChange: true}).then(() => this.router.navigate(['main/init',requestNewReserva]));
+    this.router.navigateByUrl('/main', {skipLocationChange: true}).then(() => this.router.navigate(['main/newreserva']));
+  }
+
+  misReservas() {
+    console.log('Estoy en mis reservas');
+    this.router.navigateByUrl('/main', {skipLocationChange: true}).then(() => this.router.navigate(['main/reservas']));
   }
 
   inicioMapa() {

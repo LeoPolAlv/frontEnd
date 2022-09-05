@@ -72,6 +72,7 @@ function endOfPeriod(period: CalendarPeriod, date: Date): Date {
 export class CalendarioReservasComponent implements OnInit{
 
   @Input () userReserva!: any;
+  @Input () porUsuario!: boolean;
   
   public salaSeleccionada: number = 0;
 
@@ -162,16 +163,26 @@ export class CalendarioReservasComponent implements OnInit{
     }
 
   ngOnInit(): void {
-    this.salaService.nuevaSala
-          .subscribe( (salaReserva: any) => {
-            this.events = [];
-            this.salaSeleccionada = salaReserva;
-            console.log('Salta el subscribe del cambio de sala: ', salaReserva);
-      //Buscamos las reservas que tiene una sala adjudicadas.
-            if(salaReserva){
-              this.buscarReservas(salaReserva);
-            }
-          });
+    
+    if (this.porUsuario) {
+      console.log('Calendario a rellenar con reservas de usuario');
+      this.reservasService.misReservas(this.userReserva)
+        .subscribe(reservas => { 
+          console.log('MIS RESERVAS: ', reservas)
+          this.cargarReservas(reservas);
+        })
+    } else {
+      this.salaService.nuevaSala
+      .subscribe( (salaReserva: any) => {
+        this.events = [];
+        this.salaSeleccionada = salaReserva;
+        console.log('Salta el subscribe del cambio de sala: ', salaReserva);
+  //Buscamos las reservas que tiene una sala adjudicadas.
+        if(salaReserva){
+          this.buscarReservas(salaReserva);
+        }
+      });
+    }
   }
 
   ngAfterViewInit(){
@@ -205,7 +216,7 @@ export class CalendarioReservasComponent implements OnInit{
     this.reservasService.buscarReservas(sala)
           .subscribe((reservas: any)=>{
             console.log('Reservas por sala: ', reservas)
-            this.cargarReservasSala(reservas);
+            this.cargarReservas(reservas);
         }); 
   }
 
@@ -224,7 +235,7 @@ export class CalendarioReservasComponent implements OnInit{
       });
   }
 
-  cargarReservasSala(reservasSala: any){
+  cargarReservas(reservasSala: any){
     this.events = [];
     let acciones: CalendarEventAction[] = [];
 
@@ -368,11 +379,15 @@ export class CalendarioReservasComponent implements OnInit{
   }*/
 
   //Añadimos un evento en el calendario en vistas week y day
-  clickSegmento(evento: any){
-    this.clickedDate = evento.date;
-    if(this.clickedDate > this.minDate ){
-      this.addEvent(this.clickedDate);
-    }
+  clickSegmento(evento: any) {
+    if (!this.porUsuario) {
+      this.clickedDate = evento.date;
+      if(this.clickedDate > this.minDate ){
+        this.addEvent(this.clickedDate);
+      } 
+    } /*else {
+      console.log('Por usuario no se puede dar alta de reservas');
+    }*/
   }
 
   validateEventTimesChanged({ event, newStart, newEnd, allDay }: CalendarEventTimesChangedEvent,
@@ -418,7 +433,7 @@ export class CalendarioReservasComponent implements OnInit{
         if ((iEvent === event) && (this.validateEventTimesChanged(cambioFechaEvent, false))){
           this.altaReservaForm.controls['fechaHasta'].setValue(newEnd);
           this.altaReservaForm.controls['fechaReserva'].setValue(newStart);
-          //TODO: Aqui actualizamos el evento nuevo ya que ha pasado todas las validaciones.
+          //Aqui actualizamos el evento nuevo ya que ha pasado todas las validaciones.
           if (!this.newEvento) {
             this.actualizoFechasReserva(newStart, newEnd!, event.id!);
           }

@@ -7,7 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { NewReservaComponent } from './new-reserva/new-reserva.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from '../components/components.module';
-import { NewReservaInitComponent } from './new-reserva-init/new-reserva-init.component';
+import { MisReservasComponent } from './mis-reservas/mis-reservas.component';
 
 
 
@@ -16,7 +16,7 @@ import { NewReservaInitComponent } from './new-reserva-init/new-reserva-init.com
     HomeComponent,
     PagesComponent,
     NewReservaComponent,
-    NewReservaInitComponent,
+    MisReservasComponent,
   ],
   imports: [
     CommonModule,
