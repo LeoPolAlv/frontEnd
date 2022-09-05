@@ -27,7 +27,7 @@ import { MisReservasComponent } from './mis-reservas/mis-reservas.component';
   ],
   exports: [
     HomeComponent,
-    PagesComponent,
+    //PagesComponent,
   ]
 })
 export class PagesModule { }

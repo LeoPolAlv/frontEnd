@@ -34,12 +34,13 @@ export class SidebarComponent implements OnInit {
 
   misReservas() {
     console.log('Estoy en mis reservas');
-    this.router.navigateByUrl('/main', {skipLocationChange: true}).then(() => this.router.navigate(['main/reservas']));
+    this.router.navigate(['main']);
+    //this.router.navigateByUrl('/main', {skipLocationChange: true}).then(() => this.router.navigate(['main/newreserva']));
   }
 
-  inicioMapa() {
+  /*inicioMapa() {
     this.router.navigate(['main']);
-  }
+  }*/
 
   async logoOut(){
     await this.loginService.logout();

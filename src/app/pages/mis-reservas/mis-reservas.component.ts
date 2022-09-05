@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
 import { ReservasService } from '../../services/reservas.service';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-mis-reservas',
@@ -9,24 +10,14 @@ import { ReservasService } from '../../services/reservas.service';
 })
 export class MisReservasComponent implements OnInit {
 
-  public usuario!: Data;
+  public usuario: String = '';
 
   constructor(
-    private activatedRoute: ActivatedRoute,
-    private reservaService: ReservasService,
-  ) { }
-
-  ngOnInit(): void {
-
-    this.verParametros();
+    private usuarioService: UsuarioService,
+  ) { 
+    this.usuario = this.usuarioService.getusuario();
   }
 
-  verParametros() {
-    this.activatedRoute.data.subscribe(usuario => {
-      this.usuario = usuario['usuario'];
-      //console.log('Usuario this que me llega a mis reservas: ', this.usuario);
-      //console.log('Usuario que me llega a mis reservas: ', usuario['usuario']);
-    });
-  }
+  ngOnInit(): void {}
 
 }

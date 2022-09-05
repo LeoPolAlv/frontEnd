@@ -10,8 +10,9 @@ const childRoutes: Routes = [
   //{ path: '', component: HomeComponent },
   { path: 'new', component: NewReservaComponent, data: { usuario: new UsuarioService().getusuario() } },
   { path: 'newreserva', component: HomeComponent, data: { usuario: new UsuarioService().getusuario() } },
-  { path: 'reservas', component: MisReservasComponent, data:{usuario: new UsuarioService().getusuario() } },
+  { path: 'reservas', component: MisReservasComponent },
   { path: '', component: MisReservasComponent, data:{usuario: new UsuarioService().getusuario() } },
+  { path: '**', redirectTo: "reservas"},
 ]
 
 
