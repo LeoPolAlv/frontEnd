@@ -8,10 +8,11 @@ import { NewReservaComponent } from './new-reserva/new-reserva.component';
 
 const childRoutes: Routes = [
   //{ path: '', component: HomeComponent },
-  { path: 'new', component: NewReservaComponent, data: { usuario: new UsuarioService().getusuario() } },
-  { path: 'newreserva', component: HomeComponent, data: { usuario: new UsuarioService().getusuario() } },
+  //{ path: '', component: MisReservasComponent, data:{usuario: new UsuarioService().getusuario() } },
+  { path: '', component: MisReservasComponent },
   { path: 'reservas', component: MisReservasComponent },
-  { path: '', component: MisReservasComponent, data:{usuario: new UsuarioService().getusuario() } },
+  { path: 'newreserva', component: HomeComponent, data: { usuario: new UsuarioService().getusuario() } },
+  { path: 'new', component: NewReservaComponent, data: { usuario: new UsuarioService().getusuario() } },
   { path: '**', redirectTo: "reservas"},
 ]
 

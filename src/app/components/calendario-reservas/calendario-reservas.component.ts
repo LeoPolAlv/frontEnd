@@ -11,6 +11,7 @@ import { ReservasService } from '../../services/reservas.service';
 import { Reservas } from '../../interfaces/responses';
 import { AltaReserva, PutFechaReserva } from 'src/app/interfaces/request';
 import { SalasService } from '../../services/salas.service';
+import { UsuarioService } from '../../services/usuario.service';
 
 const colors: any = {
   inactivo: {
@@ -20,6 +21,10 @@ const colors: any = {
   blueAtos: {
     primary: '#e9e9e9',
     secondary: '#20589d',
+  },
+  misReservas: {
+    primary: '#e9e9e9',
+    secondary: '#fcce51'
   },
   preReserva: {
     primary: '#0b5345',
@@ -71,10 +76,10 @@ function endOfPeriod(period: CalendarPeriod, date: Date): Date {
 
 export class CalendarioReservasComponent implements OnInit{
 
-  @Input () userReserva!: any;
   @Input () porUsuario!: boolean;
   
   public salaSeleccionada: number = 0;
+  public userReserva: string = '';
 
   @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
   @ViewChild('modalAltaReserva') modalAltaReserva!: TemplateRef<any>;
@@ -147,45 +152,49 @@ export class CalendarioReservasComponent implements OnInit{
 
   public refresh = new Subject<void>();
   public events: CalendarEvent[] = [];
+  public eventsAux: CalendarEvent[] = [];
   private eventos!: CalendarEvent; 
   public clickedDate: Date = new Date();
+  public colorAsignado: any = '';
   
   public activeDayIsOpen: boolean = true;
   private newEvento: boolean = false;
-
+  
   constructor(
     private modal: NgbModal,
     private salaService: SalasService,
     private reservasService: ReservasService,
     private fb: FormBuilder,
-    ) {
-      this.dateOrViewChanged();
-    }
+  )
+  {
+    this.dateOrViewChanged();
+    this.userReserva = new UsuarioService().getusuario();
+    //console.log('User que nos llega a acelndar: ', this.userReserva);
+  }
 
   ngOnInit(): void {
     
     if (this.porUsuario) {
-      console.log('Calendario a rellenar con reservas de usuario');
-      this.reservasService.misReservas(this.userReserva)
-        .subscribe(reservas => { 
-          console.log('MIS RESERVAS: ', reservas)
-          this.cargarReservas(reservas);
-        })
+      //console.log('Entro por usuario');
+      this.buscarMisReservas();
     } else {
+      //console.log('Entro por sala');
       this.salaService.nuevaSala
       .subscribe( (salaReserva: any) => {
         this.events = [];
         this.salaSeleccionada = salaReserva;
-        console.log('Salta el subscribe del cambio de sala: ', salaReserva);
+        //console.log('Salta el subscribe del cambio de sala: ', this.salaSeleccionada);
   //Buscamos las reservas que tiene una sala adjudicadas.
-        if(salaReserva){
-          this.buscarReservas(salaReserva);
+        if (salaReserva) {
+          this.buscarMisReservas();
+        //this.buscarReservas(salaReserva);
         }
       });
     }
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
+    this.events = [];
     this.crearFormulario();
   }
 
@@ -202,41 +211,38 @@ export class CalendarioReservasComponent implements OnInit{
 
   inicializarForm(){
     this.altaReservaForm.controls['roomId'].setValue(this.salaSeleccionada);
-    this.altaReservaForm.controls['dasUser'].setValue(this.userReserva.usuario);
+    this.altaReservaForm.controls['dasUser'].setValue(this.userReserva);
     this.altaReservaForm.controls['titulo'].setValue('');
     this.altaReservaForm.controls['descripcion'].setValue('');
     this.altaReservaForm.controls['fechaReserva'].setValue('');
     this.altaReservaForm.controls['fechaHasta'].setValue('');
   }
-  
+
+  buscarMisReservas() {
+    //console.log('Calendario a rellenar con reservas de usuario');
+    //this.colorAsignado = colors.misReservas;
+    this.reservasService.misReservas(this.userReserva)
+      .subscribe(reservas => {
+        //console.log('MIS RESERVAS: ', reservas)
+        this.cargarMisReservas(reservas);
+        this.buscarReservas(this.salaSeleccionada);
+      });
+  }
+
   buscarReservas(sala: number) {
     //Le indicamos que no hay nuevos eventos a tratar.
     this.newEvento = false;
+    this.colorAsignado = colors.blueAtos;
     
     this.reservasService.buscarReservas(sala)
           .subscribe((reservas: any)=>{
-            console.log('Reservas por sala: ', reservas)
+            //console.log('Reservas por sala: ', reservas)
             this.cargarReservas(reservas);
         }); 
   }
 
-  altaReserva(){
-    //this.altaReservaForm.controls['roomId'].setValue(this.salaSeleccionada);
-    console.log('Formulario que envio a dar de alta: ', this.altaReservaForm.value);
-    this.reservasService.altaReserva(this.altaReservaForm.value)
-      .subscribe({
-        next: (resp) => {
-          console.log('Respuesta del alta de reserva: ', resp);
-          this.inicializarForm();
-          this.modal.dismissAll();
-          this.buscarReservas(this.salaSeleccionada);
-        },
-        error: (err) => console.log('Error en el alta de reserva: ', err)
-      });
-  }
-
   cargarReservas(reservasSala: any){
-    this.events = [];
+    //this.events = [];
     let acciones: CalendarEventAction[] = [];
 
     reservasSala.forEach((reserva:Reservas) => {
@@ -263,13 +269,91 @@ export class CalendarioReservasComponent implements OnInit{
             beforeStart: reserva.activa,
             afterEnd: reserva.activa,
           },
-        };
-    
+      };
+      
         this.events = [
           ...this.events, 
           this.eventos]
     });
+    //console.log('Eventos Aux de Reserva Salas: ', this.events);
+    this.validarDuplicados();
     this.refresh.next();
+  }
+
+  cargarMisReservas(reservas: any) {
+    let acciones: CalendarEventAction[] = [];
+
+    reservas.forEach((reserva:Reservas) => {
+      let colorAsignado: any = colors.misReservas;
+
+      if (!reserva.activa){
+        colorAsignado = colors.inactivo;
+        acciones = this.actionsDisabled;
+      } else {
+        acciones = this.actionsMantenimiento;
+      }
+
+      this.eventos = 
+        {
+          id: reserva.idReserva,
+          title: reserva.titulo,
+          start: new Date(reserva.fechaReserva),
+          end: new Date(reserva.fechaHasta),
+          color: colorAsignado,
+          actions: acciones,
+          allDay: false,
+          draggable: reserva.activa,
+          resizable: {
+            beforeStart: reserva.activa,
+            afterEnd: reserva.activa,
+          },
+        };
+         
+        this.events = [
+          ...this.events, 
+          this.eventos]
+    });
+    //console.log('Eventos Aux de Reserva usuario: ', this.events);
+    //this.validarDuplicados();
+    this.refresh.next();
+  }
+
+  validarDuplicados() {
+    let letrasUnicas: any[] = [];
+    let repetido: boolean = false;
+    this.events.forEach((elemento) => {
+      //console.log('ELEMENTO LEIDO: ', elemento);
+      repetido = false;
+      letrasUnicas.forEach(evento => {
+        if (elemento.id == evento.id) {
+          //console.log('evento Leido: ', evento);
+          repetido = true
+        }
+      });
+      if (!repetido) {
+        letrasUnicas.push(elemento);
+      }
+    });
+
+    //console.log('Letras Unicas: ', letrasUnicas);
+    this.events = letrasUnicas;
+  }
+
+  altaReserva(){
+    //this.altaReservaForm.controls['roomId'].setValue(this.salaSeleccionada);
+    //console.log('Formulario que envio a dar de alta: ', this.altaReservaForm.value);
+    this.reservasService.altaReserva(this.altaReservaForm.value)
+      .subscribe({
+        next: (resp) => {
+          //console.log('Respuesta del alta de reserva: ', resp);
+          this.inicializarForm();
+          this.events = [];
+          this.modal.dismissAll();
+          this.buscarMisReservas();
+          //this.buscarReservas(this.salaSeleccionada);
+        },
+        error: (err) => console.log('Error en el alta de reserva: ', err)
+      });
   }
 
   increment(): void {
@@ -413,7 +497,7 @@ export class CalendarioReservasComponent implements OnInit{
 
   eventTimesChanged( cambioFechaEvent: CalendarEventTimesChangedEvent): void {
     this.inicializarForm();
-    console.log('Evento cambia de hora:', cambioFechaEvent);
+    //console.log('Evento cambia de hora:', cambioFechaEvent);
     const {event, newStart, newEnd} = cambioFechaEvent;
     delete cambioFechaEvent.event.cssClass;
     this.events = this.events.map((iEvent) => {
@@ -447,7 +531,7 @@ export class CalendarioReservasComponent implements OnInit{
     //}
       return iEvent;
     });
-    console.log('Eventos: ', this.events);
+    //console.log('Eventos: ', this.events);
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
@@ -463,6 +547,7 @@ export class CalendarioReservasComponent implements OnInit{
     const fechaInicioAux = new Date(fechaInicio);
     const fechaFin = new Date(fechaInicioAux.setMinutes(fechaComienzo.getMinutes() + 15));
 
+    //TODO: ponemos la comprobacion de que un usuario no pueda sobreponer dos citas a la misma hora
     const newEvento = {
       title: 'Continua Reserva',
       start: fechaInicio,

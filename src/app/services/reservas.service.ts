@@ -23,7 +23,7 @@ export class ReservasService {
     return this.http.get<Reservas>(url_acceso);
   }
 
-  public misReservas(usuario: Data){
+  public misReservas(usuario: string){
     console.log('Usuario en servicio: ', usuario);
     const url_acceso = `${URL}/reserva/find/${usuario}`
     return this.http.get<Reservas>(url_acceso);

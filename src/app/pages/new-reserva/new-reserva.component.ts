@@ -3,6 +3,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { OficinasService } from 'src/app/services/oficinas.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SalasService } from '../../services/salas.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-new-reserva',
@@ -40,9 +41,13 @@ export class NewReservaComponent implements OnInit {
     console.log('On init de new reserva');
     document.getElementById("calendarReservas")?.setAttribute("style","display:none");
 
-    this.activatedRoute.data.subscribe(usuario => {
+    /*this.activatedRoute.data.subscribe(usuario => {
       this.usuario = usuario;
     });
+    */
+
+    this.usuario = new UsuarioService().getusuario();
+    console.log('USUARIO EN NewReserva: ', this.usuario);
 
     this.inicializarForm();
     
