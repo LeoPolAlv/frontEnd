@@ -159,6 +159,7 @@ export class CalendarioReservasComponent implements OnInit{
   
   public activeDayIsOpen: boolean = true;
   private newEvento: boolean = false;
+  private puedoModifReserva: boolean = false;
   
   constructor(
     private modal: NgbModal,
@@ -225,7 +226,9 @@ export class CalendarioReservasComponent implements OnInit{
       .subscribe(reservas => {
         //console.log('MIS RESERVAS: ', reservas)
         this.cargarMisReservas(reservas);
-        this.buscarReservas(this.salaSeleccionada);
+        if (this.salaSeleccionada) {
+          this.buscarReservas(this.salaSeleccionada);
+        }
       });
   }
 
@@ -247,18 +250,24 @@ export class CalendarioReservasComponent implements OnInit{
 
     reservasSala.forEach((reserva:Reservas) => {
       let colorAsignado: any = colors.blueAtos;
-
-      if (!reserva.activa){
+      this.puedoModifReserva = this.verificarUser(reserva.userReserva);
+      if (!reserva.activa) {
+        this.puedoModifReserva = false
         colorAsignado = colors.inactivo;
         acciones = this.actionsDisabled;
       } else {
         acciones = this.actionsMantenimiento;
       }
 
+      // Si el usuario no puede modificar la fecha de un evento, tampoco puede borrarlo o editarlo
+      if (!this.puedoModifReserva) {
+        acciones = this.actionsDisabled;
+      }
+
       this.eventos = 
         {
           id: reserva.idReserva,
-          title: reserva.titulo,
+          title: `${reserva.titulo} - ${reserva.userReserva} - ${reserva.officeRoom} - ${reserva.roomName}`,
           start: new Date(reserva.fechaReserva),
           end: new Date(reserva.fechaHasta),
           color: colorAsignado,
@@ -266,8 +275,8 @@ export class CalendarioReservasComponent implements OnInit{
           allDay: false,
           draggable: reserva.activa,
           resizable: {
-            beforeStart: reserva.activa,
-            afterEnd: reserva.activa,
+            beforeStart: this.puedoModifReserva,
+            afterEnd: this.puedoModifReserva,
           },
       };
       
@@ -296,7 +305,7 @@ export class CalendarioReservasComponent implements OnInit{
       this.eventos = 
         {
           id: reserva.idReserva,
-          title: reserva.titulo,
+          title: `${reserva.titulo} - ${reserva.userReserva} - ${reserva.officeRoom} - ${reserva.roomName}`,
           start: new Date(reserva.fechaReserva),
           end: new Date(reserva.fechaHasta),
           color: colorAsignado,
@@ -316,6 +325,10 @@ export class CalendarioReservasComponent implements OnInit{
     //console.log('Eventos Aux de Reserva usuario: ', this.events);
     //this.validarDuplicados();
     this.refresh.next();
+  }
+
+  verificarUser(user: string): boolean {  
+    return user === this.userReserva ? true : false;
   }
 
   validarDuplicados() {
@@ -448,7 +461,8 @@ export class CalendarioReservasComponent implements OnInit{
     }
   }
 
-  /*dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    console.log('Estoy en dayClicked');
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -460,7 +474,7 @@ export class CalendarioReservasComponent implements OnInit{
       }
       this.viewDate = date;
     }
-  }*/
+  }
 
   //Añadimos un evento en el calendario en vistas week y day
   clickSegmento(evento: any) {
@@ -475,7 +489,7 @@ export class CalendarioReservasComponent implements OnInit{
   }
 
   validateEventTimesChanged({ event, newStart, newEnd, allDay }: CalendarEventTimesChangedEvent,
-                              addCssClass = true){
+    addCssClass = true) {
     const overlappingEvent = this.events.find((otherEvent) => {
       return (
         otherEvent !== event &&
@@ -495,7 +509,7 @@ export class CalendarioReservasComponent implements OnInit{
     return true;
   }
 
-  eventTimesChanged( cambioFechaEvent: CalendarEventTimesChangedEvent): void {
+  eventTimesChanged(cambioFechaEvent: CalendarEventTimesChangedEvent): void {
     this.inicializarForm();
     //console.log('Evento cambia de hora:', cambioFechaEvent);
     const {event, newStart, newEnd} = cambioFechaEvent;
@@ -547,7 +561,6 @@ export class CalendarioReservasComponent implements OnInit{
     const fechaInicioAux = new Date(fechaInicio);
     const fechaFin = new Date(fechaInicioAux.setMinutes(fechaComienzo.getMinutes() + 15));
 
-    //TODO: ponemos la comprobacion de que un usuario no pueda sobreponer dos citas a la misma hora
     const newEvento = {
       title: 'Continua Reserva',
       start: fechaInicio,
@@ -573,7 +586,8 @@ export class CalendarioReservasComponent implements OnInit{
   }
 
   //Al mover o arrastrar una reserva del calendario se modifican las fechas de inici y fin de la reserva concreta.
-  actualizoFechasReserva(newStart: Date, newEnd: Date, id: string | number){
+  actualizoFechasReserva(newStart: Date, newEnd: Date, id: string | number) {
+    console.log('Estoy en actualizoFechasReserva');
     let nuevaData: PutFechaReserva = {
       fechaReserva: newStart,
       fechaHasta: newEnd,

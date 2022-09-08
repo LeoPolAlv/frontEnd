@@ -48,6 +48,7 @@ export interface Reservas {
   nombreEquipo: string[];
   fechaReserva: string;
   fechaHasta: string;
+  userReserva: string;
 }
 
 export interface Pais {

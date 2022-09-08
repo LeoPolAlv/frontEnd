@@ -38,7 +38,7 @@ export class NewReservaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('On init de new reserva');
+    //console.log('On init de new reserva');
     document.getElementById("calendarReservas")?.setAttribute("style","display:none");
 
     /*this.activatedRoute.data.subscribe(usuario => {
@@ -47,7 +47,7 @@ export class NewReservaComponent implements OnInit {
     */
 
     this.usuario = new UsuarioService().getusuario();
-    console.log('USUARIO EN NewReserva: ', this.usuario);
+    //console.log('USUARIO EN NewReserva: ', this.usuario);
 
     this.inicializarForm();
     
