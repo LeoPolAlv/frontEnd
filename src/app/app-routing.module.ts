@@ -7,6 +7,7 @@ import { NoFoundPageComponent } from './no-found-page/no-found-page.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/main' },
+  { path: 'admin', pathMatch: 'full', redirectTo: '/admin' },
   /*{
     path: 'login', 
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule)

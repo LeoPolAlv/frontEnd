@@ -12,19 +12,28 @@ interface TOKEN
 
 const URL = environment.url;
 
+const TOKEN_KEY = 'AuthToken';
+const USERNAME_KEY = 'AuthUserName';
+const AUTHORITIES_KEY = 'AutAuthorities';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
 
   public token: string = '';
+  public roles: Array<string> = [];
 
   constructor() {
     //this.token = this.getToken();
    }
 
-  public getToken(): string {
+   public getToken(): string {
     return localStorage.getItem('TKResSl') || '';
+  }
+
+  public setToken(token: string) {
+    return localStorage.setItem('TKResSl', token);
   }
 
   /**
@@ -60,6 +69,22 @@ export class UsuarioService {
      // console.log('Role obtenido: ', roleToken);  
     }
     return roleToken;
+  }
+
+  public setAuthorities(authorities: string[]): void {
+    localStorage.removeItem(AUTHORITIES_KEY);
+    localStorage.setItem(AUTHORITIES_KEY, JSON.stringify(authorities));
+  }
+
+  public getAuthorities(): string[] {
+    this.roles = [];
+    if (localStorage.getItem(AUTHORITIES_KEY)) {
+       const value: any = localStorage.getItem(AUTHORITIES_KEY);
+       value.forEach((authority:any) => {
+         this.roles.push(authority.authority);
+      });
+    } 
+    return this.roles;
   }
 
 }

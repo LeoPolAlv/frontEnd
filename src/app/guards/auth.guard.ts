@@ -14,7 +14,16 @@ export class AuthGuard implements CanActivate {
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot):  boolean | UrlTree {
+    state: RouterStateSnapshot): boolean | UrlTree {
+    
+      //const expectedRol = route.data.expectedRol;
+      /*const roles = this.usuarioService.getAuthorities();
+      this.realRol = 'user';
+      roles.forEach(rol => {
+        if (rol === 'ROLE_ADMIN') {
+          this.realRol = 'admin';
+        }
+      });*/
       //console.log('Comprobamos guard');
       //console.log('Validamos token en guard: ', this.usuarioService.vaidarToken());
       if(!this.usuarioService.vaidarToken()){

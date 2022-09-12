@@ -15,7 +15,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 @NgModule({
   declarations: [
     AppComponent,
-    NoFoundPageComponent
+    NoFoundPageComponent,
   ],
   imports: [
     BrowserModule,

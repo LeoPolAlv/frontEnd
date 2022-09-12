@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../../services/login.service';
 import { LoginUsuario } from '../../models/login.model';
 import { Router } from '@angular/router';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb:FormBuilder,
     private loginService: LoginService,
+    private usuarioService: UsuarioService,
     private router:Router,
   ) {
     this.inicializarForm();
@@ -43,8 +45,10 @@ export class LoginComponent implements OnInit {
     const loginUser = new LoginUsuario(this.formLogin.get('username')?.value,this.formLogin.get('password')?.value)
     this.loginService.login(loginUser).subscribe(({
       next: async (resp: any) => { 
-        //console.log('Creamos el token en LOGIN');
-        await localStorage.setItem('TKResSl',resp.token); 
+        //console.log('Respuesta del Login: ', resp);
+        this.usuarioService.setToken(resp.token);
+        //localStorage.setItem('TKResSl', resp.token); 
+        
       },
       error: (err) => {
         console.log('Error en LOGIN: ', err);
