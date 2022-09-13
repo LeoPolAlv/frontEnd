@@ -4,14 +4,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginRoutingModule } from './login/login-routing.module';
 import { PagesRoutingModule } from './pages/pages-routing.module';
 import { NoFoundPageComponent } from './no-found-page/no-found-page.component';
+import { NoAutorizadoComponent } from './no-autorizado/no-autorizado.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/main' },
-  { path: 'admin', pathMatch: 'full', redirectTo: '/admin' },
-  /*{
-    path: 'login', 
-    loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
-  },*/
+  //{ path: 'admin', pathMatch: 'full', redirectTo: '/admin' },
+  { path: 'noauth', component: NoAutorizadoComponent },
   { path: '**', component: NoFoundPageComponent },
 ];
 

@@ -273,11 +273,11 @@ export class CalendarioReservasComponent implements OnInit{
           color: colorAsignado,
           actions: acciones,
           allDay: false,
-          draggable: reserva.activa,
+          draggable: this.puedoModifReserva,
           resizable: {
             beforeStart: this.puedoModifReserva,
             afterEnd: this.puedoModifReserva,
-          },
+        }
       };
       
         this.events = [
@@ -511,7 +511,7 @@ export class CalendarioReservasComponent implements OnInit{
 
   eventTimesChanged(cambioFechaEvent: CalendarEventTimesChangedEvent): void {
     this.inicializarForm();
-    //console.log('Evento cambia de hora:', cambioFechaEvent);
+    console.log('Evento cambia de hora:', cambioFechaEvent);
     const {event, newStart, newEnd} = cambioFechaEvent;
     delete cambioFechaEvent.event.cssClass;
     this.events = this.events.map((iEvent) => {
@@ -532,7 +532,7 @@ export class CalendarioReservasComponent implements OnInit{
           this.altaReservaForm.controls['fechaHasta'].setValue(newEnd);
           this.altaReservaForm.controls['fechaReserva'].setValue(newStart);
           //Aqui actualizamos el evento nuevo ya que ha pasado todas las validaciones.
-          if (!this.newEvento) {
+          if (!this.newEvento){
             this.actualizoFechasReserva(newStart, newEnd!, event.id!);
           }
           return {
@@ -587,7 +587,7 @@ export class CalendarioReservasComponent implements OnInit{
 
   //Al mover o arrastrar una reserva del calendario se modifican las fechas de inici y fin de la reserva concreta.
   actualizoFechasReserva(newStart: Date, newEnd: Date, id: string | number) {
-    console.log('Estoy en actualizoFechasReserva');
+    //console.log('Estoy en actualizoFechasReserva');
     let nuevaData: PutFechaReserva = {
       fechaReserva: newStart,
       fechaHasta: newEnd,

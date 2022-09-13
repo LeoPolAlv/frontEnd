@@ -16,7 +16,7 @@ export class PagesComponent implements OnInit {
      //console.log('Existe Token? ',this.usuarioService.vaidarToken());
      //console.log('Usuario Token ',this.usuarioService.getusuario());
      //console.log('Role Token ',this.usuarioService.getRol());
-     this.userToken = this.usuarioService.getusuario();
+    this.userToken = this.usuarioService.getusuario();
    }
 
   ngOnInit(): void {

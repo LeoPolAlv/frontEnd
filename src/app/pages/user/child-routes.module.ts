@@ -1,21 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PruebaAdminComponent } from './prueba-admin/prueba-admin.component';
+import { UsuarioService } from '../../services/usuario.service';
+import { HomeComponent } from './home/home.component';
+import { MisReservasComponent } from './mis-reservas/mis-reservas.component';
+import { NewReservaComponent } from './new-reserva/new-reserva.component';
 
-const childAdminRoutes: Routes = [
+const childRoutes: Routes = [
   //{ path: '', component: HomeComponent },
   //{ path: '', component: MisReservasComponent, data:{usuario: new UsuarioService().getusuario() } },
-  { path: '', component: PruebaAdminComponent },
-  /*{ path: 'reservas', component: MisReservasComponent },
+  { path: '', component: MisReservasComponent },
+  { path: 'reservas', component: MisReservasComponent },
   { path: 'newreserva', component: HomeComponent, data: { usuario: new UsuarioService().getusuario() } },
   { path: 'new', component: NewReservaComponent, data: { usuario: new UsuarioService().getusuario() } },
-  { path: '**', redirectTo: "reservas"},*/
+  { path: '**', redirectTo: "reservas"},
 ]
 
 
 @NgModule({
   imports: [
-    RouterModule.forChild(childAdminRoutes),
+    RouterModule.forChild(childRoutes),
   ],
   exports: [
     RouterModule,

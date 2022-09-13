@@ -1,4 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { LoginService } from 'src/app/services/login.service';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-header',
@@ -7,11 +10,39 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  @Input() usertoken!: string;
+  @Input() userToken!: string;
 
-  constructor() { }
+  private roleToken: string = '';
+  public role: string = ''
 
-  ngOnInit(): void {
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    private usuarioService: UsuarioService,
+  ) { 
   }
+  
+  ngOnInit(): void {
+    this.role = 'user';
+
+    this.roleToken = this.usuarioService.getRol();
+    if (this.roleToken === 'ROLE_ADMIN') {
+      this.role = 'admin'
+    } 
+  }
+
+  nuevaReserva() {
+    this.router.navigateByUrl('/main', {skipLocationChange: true}).then(() => this.router.navigate(['main/newreserva']));
+  }
+
+  misReservas() {
+    this.router.navigate(['main']);
+  }
+
+  logoOut(){
+    this.loginService.logout();
+    this.router.navigateByUrl('/login');
+  }
+
 
 }

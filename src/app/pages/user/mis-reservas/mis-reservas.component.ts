@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
-import { ReservasService } from '../../services/reservas.service';
-import { UsuarioService } from '../../services/usuario.service';
+import { ReservasService } from '../../../services/reservas.service';
+import { UsuarioService } from '../../../services/usuario.service';
 
 @Component({
   selector: 'app-mis-reservas',

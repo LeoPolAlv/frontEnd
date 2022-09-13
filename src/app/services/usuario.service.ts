@@ -24,9 +24,7 @@ export class UsuarioService {
   public token: string = '';
   public roles: Array<string> = [];
 
-  constructor() {
-    //this.token = this.getToken();
-   }
+  constructor() {  }
 
    public getToken(): string {
     return localStorage.getItem('TKResSl') || '';

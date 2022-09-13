@@ -1,18 +1,49 @@
-<div class="container-fluid">
-    <nav class="navbar  navbar-expand-lg navbar-light bg-light">
-
-        <div class="col-3 ms-3">
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <div class="col-1 ms-3">
             <a class="navbar-brand" href="#">
                 <img src="../../../assets/images/ATOS.png" class="d-inline-block align-top" alt="">
             </a>
         </div>
-        <div class="col-6 ms-5">
-            <span class="navbar-brand mb-20 h1">
-                <strong>Reserva Salas</strong>
-            </span>
+        <div class="col-8 ms-5 collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!--<li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>-->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Reservas
+                  </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" (click)="misReservas()">Mis Reservas</a></li>
+                        <li><a class="dropdown-item" (click)="nuevaReserva()">Gestionar Reserva</a></li>
+                        <li><a class="dropdown-item" href="#">Otra acción</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item pointer" (click)="logoOut()"><i class="bi bi-box-arrow-left me-3">   Salir</i></a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown" *ngIf="role === 'admin'">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Administracion
+                  </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item">Oficinas</a></li>
+                        <li><a class="dropdown-item">Salas</a></li>
+                        <li><a class="dropdown-item">Equipamientos</a></li>
+                    </ul>
+                </li>
+                <!--<li class="nav-item">
+                    <a class="nav-link disabled">Disabled</a>
+                </li>-->
+            </ul>
         </div>
         <div class="col-3 ms-5">
-            <p>Usuario: <b> {{usertoken}} </b></p>
+            <p>Usuario: <b> {{userToken}} </b></p>
         </div>
-    </nav>
-</div>
+    </div>
+</nav>

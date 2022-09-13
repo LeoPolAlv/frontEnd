@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { OficinasService } from 'src/app/services/oficinas.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { SalasService } from '../../services/salas.service';
+import { SalasService } from '../../../services/salas.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
