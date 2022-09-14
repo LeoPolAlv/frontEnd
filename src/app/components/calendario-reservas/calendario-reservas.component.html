@@ -58,7 +58,7 @@
     <div class="clearfix"></div>
 </h3>-->
 
-<div class="table-responsive">
+<!--<div class="table-responsive">
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -83,15 +83,9 @@
                     <input type="color" [(ngModel)]="event.color!.secondary" (change)="refresh.next()" />
                 </td>
                 <td>
-                    <!--[altInput]="true" -->
-                    <!--[enableTime]="true"-->
-                    <!--[convertModelValue]="true"-->
                     <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="event.start" (ngModelChange)="refresh.next()" dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" />
                 </td>
                 <td>
-                    <!--[altInput]="true" -->
-                    <!--[enableTime]="true"-->
-                    <!--[convertModelValue]="true"-->
                     <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="event.end" (ngModelChange)="refresh.next()" dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" />
                 </td>
                 <td>
@@ -102,7 +96,7 @@
             </tr>
         </tbody>
     </table>
-</div>
+</div>-->
 
 <ng-template #modalAltaReserva let-close="close">
     <div class="modal-header">

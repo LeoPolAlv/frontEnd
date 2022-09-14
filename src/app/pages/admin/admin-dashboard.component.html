@@ -1,0 +1,38 @@
+<mat-grid-list cols="8" rowHeight="1:1">
+    <mat-grid-tile *ngFor="let item of menu">
+        <mat-card class="card">
+            <mat-card-header>
+                <mat-card-title class="cardTitulo"> {{item.title}} </mat-card-title>
+                <!--<mat-card-subtitle> Subtitulos de la card </mat-card-subtitle>-->
+            </mat-card-header>
+            <mat-card-content>
+                <img mat-card-image [src]="item.img" class="img-card" />
+                <!--Contenido de la card-->
+            </mat-card-content>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+                <button id="botonCard" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item *ngFor="let boton of item.acciones">
+                      <mat-icon>{{boton.id}}</mat-icon>
+                      <span>{{boton.texto}}</span>
+                    </button>
+                </mat-menu>
+                <!--<div>
+                    <mat-grid-list cols={{item.acciones.length}} rowHeight="1:1">
+                        <mat-grid-tile *ngFor="let boton of item.acciones">
+                            <button mat-fab color={{boton.color}}>
+                            <mat-icon>{{boton.id}}</mat-icon>
+                        </button>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                </div>-->
+            </mat-card-actions>
+        </mat-card>
+    </mat-grid-tile>
+    <!--    <mat-grid-tile>2</mat-grid-tile>
+    <mat-grid-tile>3</mat-grid-tile>
+    <mat-grid-tile>4</mat-grid-tile>-->
+</mat-grid-list>

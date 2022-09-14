@@ -5,7 +5,7 @@ import { UsuarioService } from '../services/usuario.service';
 @Injectable({
   providedIn: 'root'
 })
-export class RolesGuard implements CanActivate, CanLoad {
+export class RolesGuard implements CanActivate { //, CanLoad {
 
   constructor(
     private usuarioService: UsuarioService,
@@ -18,7 +18,7 @@ export class RolesGuard implements CanActivate, CanLoad {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean | UrlTree {
-    console.log('Can Activate admin');
+    //console.log('Can Activate admin');
     const role = this.usuarioService.getRol();
     if (role !== 'ROLE_ADMIN') {
       this.router.navigateByUrl('/noauth');
@@ -28,10 +28,10 @@ export class RolesGuard implements CanActivate, CanLoad {
     return true;
   }
 
-  canLoad(
+  /*canLoad(
     route: Route,
     segments: UrlSegment[]): boolean | UrlTree {
     console.log('Can Load admin');
     return false;
-  }
+  }*/
 }

@@ -5,7 +5,7 @@
                 <img src="../../../assets/images/ATOS.png" class="d-inline-block align-top" alt="">
             </a>
         </div>
-        <div class="col-8 ms-5 collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="col-7 ms-5 collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <!--<li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
@@ -13,7 +13,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
                 </li>-->
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" *ngIf="role !== 'admin'">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Reservas
                   </a>
@@ -27,7 +27,7 @@
                         <li><a class="dropdown-item pointer" (click)="logoOut()"><i class="bi bi-box-arrow-left me-3">   Salir</i></a></li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown" *ngIf="role === 'admin'">
+                <!--<li class="nav-item dropdown" *ngIf="role === 'admin'">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Administracion
                   </a>
@@ -36,7 +36,7 @@
                         <li><a class="dropdown-item">Salas</a></li>
                         <li><a class="dropdown-item">Equipamientos</a></li>
                     </ul>
-                </li>
+                </li>-->
                 <!--<li class="nav-item">
                     <a class="nav-link disabled">Disabled</a>
                 </li>-->
@@ -44,6 +44,12 @@
         </div>
         <div class="col-3 ms-5">
             <p>Usuario: <b> {{userToken}} </b></p>
+        </div>
+        <div class="col-1" *ngIf="role === 'admin'">
+            <button id="botonCard" mat-icon-button (click)="logoOut()">
+                <!--<mat-icon>more_vert</mat-icon>-->
+                <img mat-card-image src="../../../assets/images/Icons/salir.svg" class="botonSalir" />
+            </button>
         </div>
     </div>
 </nav>

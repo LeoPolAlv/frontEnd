@@ -61,8 +61,14 @@ export class LoginComponent implements OnInit {
         } else {
           localStorage.removeItem('ResSalRbr');
         }
-        //Si todo fue bien navegamos a la pagina principal
-        this.router.navigateByUrl("");
+        //Si todo fue bien navegamos a la pagina principal dependiendo del role del usuario logeado
+        const role = this.usuarioService.getRol();
+        
+        if (role === 'ROLE_ADMIN') {
+          this.router.navigateByUrl("admin");
+        } else {
+          this.router.navigateByUrl("main");
+        }
       }
     })
     )

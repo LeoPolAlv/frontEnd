@@ -294,13 +294,20 @@ export class CalendarioReservasComponent implements OnInit{
 
     reservas.forEach((reserva:Reservas) => {
       let colorAsignado: any = colors.misReservas;
+      let puedoMover: boolean = true;
 
       if (!reserva.activa){
         colorAsignado = colors.inactivo;
         acciones = this.actionsDisabled;
+        puedoMover = false;
       } else {
         acciones = this.actionsMantenimiento;
       }
+
+      if (this.porUsuario) {
+        acciones = this.actionsDisabled;
+        puedoMover = false;
+      } 
 
       this.eventos = 
         {
@@ -311,10 +318,10 @@ export class CalendarioReservasComponent implements OnInit{
           color: colorAsignado,
           actions: acciones,
           allDay: false,
-          draggable: reserva.activa,
+          draggable: puedoMover,
           resizable: {
-            beforeStart: reserva.activa,
-            afterEnd: reserva.activa,
+            beforeStart: puedoMover,
+            afterEnd: puedoMover,
           },
         };
          

@@ -5,6 +5,7 @@ import { HeaderComponent } from './header/header.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MaterialModule } from '../material.module';
 
 
 @NgModule({
@@ -15,8 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     CommonModule,
     MatNativeDateModule,
-    MatMenuModule, 
-    MatButtonModule,
+    MaterialModule,
   ],
   exports: [
     SidebarComponent,
