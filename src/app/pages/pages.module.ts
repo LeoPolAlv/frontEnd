@@ -5,10 +5,15 @@ import { PagesComponent } from './pages.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { NewReservaComponent } from './user/new-reserva/new-reserva.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from '../components/components.module';
 import { MisReservasComponent } from './user/mis-reservas/mis-reservas.component';
 import { AdminModule } from './admin/admin.module';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { GMapModule } from 'primeng/gmap';
+
 
 
 
@@ -25,7 +30,12 @@ import { AdminModule } from './admin/admin.module';
     SharedModule,
     ReactiveFormsModule,
     ComponentsModule,
-    AdminModule
+    AdminModule,
+    ToastModule,
+    ButtonModule,
+    DialogModule,
+    GMapModule,
+    FormsModule,
   ],
   exports: [
     HomeComponent,

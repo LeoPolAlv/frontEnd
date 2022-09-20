@@ -5,10 +5,9 @@ import * as Mapboxgl from 'mapbox-gl';
 import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 //import  '@mapbox/mapbox-gl-geocoder/dist/';
 //import { Router } from '@angular/router';
-import { Feature, GeoJson, Geometry } from 'src/app/interfaces/geo-json';
 import { OficinasService } from 'src/app/services/oficinas.service';
 import { Oficinas, Pais } from '../../../interfaces/responses';
-import { Properties } from '../../../interfaces/geo-json';
+import { Feature, Geometry, Properties } from '../../../interfaces/geo-json';
 import { Router } from '@angular/router';
 import { RequestNewReserva } from 'src/app/interfaces/request';
 import { PaisService } from 'src/app/services/pais.service';
@@ -77,7 +76,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     
     this.crearMapa();
-    this.cargarOficinas()
+    this.cargarOficinas();
     this.cargarDatosMapa();
     this.mostrarPopup();
     
@@ -89,9 +88,44 @@ export class HomeComponent implements OnInit {
       //const oficinasAux: Oficinas[] = [];
       //oficinasAux.push(oficinas);
       this.cargarJsonGeo(oficinas);
-    });
-    
+    }); 
   }
+
+  cargarJsonGeo(oficinas: any){
+
+    //Cargamos la vble que nos cargan los elementos en el mapa
+    let arrayAux: any[] = [];
+
+    oficinas.forEach((oficina: Oficinas) => {
+           
+      let geoJsonGeometry: Geometry = {
+        type: 'Point',
+        coordinates: [parseFloat(oficina.longitud),parseFloat(oficina.latitud)]
+      };
+
+      let geoJsonProperties: Properties = {
+        title: oficina.officename,
+        id: oficina.idoffice,
+        direccion: `${oficina.direccion}, ${oficina.localidad}. ${oficina.provincia}`,
+        oficina: oficina.provincia
+      } 
+
+      let geoJsonFeature: Feature = {
+        type:  'Feature',
+        geometry: geoJsonGeometry,
+        properties: geoJsonProperties
+      };
+      arrayAux.push(geoJsonFeature);
+      
+    });
+    this.geojson = {
+      type: 'FeatureCollection',
+      features: arrayAux
+    }
+    
+    //console.log('Overlaps que obtengo: ', this.overlays);
+  }
+
 
   crearMapa(){
     (Mapboxgl as any).accessToken = environment.mapboxKey;
@@ -120,38 +154,7 @@ export class HomeComponent implements OnInit {
      }));
   }
 
-  cargarJsonGeo(oficinas: any){
-
-    //Cargamos la vble que nos cargan los elementos en el mapa
-    let arrayAux: any[] = [];
-
-    oficinas.forEach((oficina: Oficinas) => {
-      
-      let geoJsonGeometry: Geometry = {
-        type: 'Point',
-        coordinates: [parseFloat(oficina.longitud),parseFloat(oficina.latitud)]
-      };
-
-      let geoJsonProperties: Properties = {
-        title: oficina.officename,
-        id: oficina.idoffice,
-        direccion: `${oficina.direccion}, ${oficina.localidad}. ${oficina.provincia}`,
-        oficina: oficina.provincia
-      } 
-
-      let geoJsonFeature: Feature = {
-        type:  'Feature',
-        geometry: geoJsonGeometry,
-        properties: geoJsonProperties
-      };
-      arrayAux.push(geoJsonFeature);
-    });
-    this.geojson = {
-      type: 'FeatureCollection',
-      features: arrayAux
-    }
-    //console.log('GeoJson ue obtengo: ', this.geojson);
-  }
+ 
 
   cargarDatosMapa(){
     this.mapa.on('load', () => {
