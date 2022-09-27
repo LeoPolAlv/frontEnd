@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import jwt_decode from 'jwt-decode';
+import { MenuItem } from 'primeng/api';
 
 interface TOKEN
 {
@@ -21,6 +22,7 @@ const AUTHORITIES_KEY = 'AutAuthorities';
 })
 export class UsuarioService {
 
+  public menuUser: any;
   public token: string = '';
   public roles: Array<string> = [];
 
@@ -83,6 +85,30 @@ export class UsuarioService {
       });
     } 
     return this.roles;
+  }
+
+  getMenuUser() {
+    return this.menuUser =
+    {
+      label: 'Reservas',
+      icon: 'pi pi-align-justify',
+      items: [
+        {
+          label: 'Mis Reservas',
+          icon: 'pi pi-calendar-times',
+          routerLink: ['/main']
+
+        },
+        {
+          label: 'Gestion Reservas',
+          icon: 'pi pi-pencil',
+          routerLink: ['/main/newreserva']
+        },
+        {
+          separator: true
+        }
+      ]
+    };
   }
 
 }

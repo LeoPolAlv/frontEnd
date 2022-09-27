@@ -8,7 +8,8 @@ export interface MenuAdmin {
 
 interface Acciones {
     id: string,
-    texto: string
+  texto: string,
+  icono: string
 }
 
 @Injectable({
@@ -23,15 +24,18 @@ export class AdminService {
       acciones:[
         {
           id: 'save',
-          texto: 'Nuevo'
+          texto: '',
+          icono:'pi pi-plus'
         },
         {
           id: 'delete',
-          texto: 'Borrar'
+          texto: 'p-button-danger',
+          icono:'pi pi-trash'
         },
         {
           id: 'update',
-          texto: 'Actualizar'
+          texto: 'p-button-warning',
+          icono:'pi pi-pencil'
         }
       ]
     },
@@ -41,15 +45,18 @@ export class AdminService {
       acciones:[
         {
           id: 'save',
-          texto: 'Nuevo'
+          texto: '',
+          icono:'pi pi-plus'
         },
         {
           id: 'delete',
-          texto: 'Borrar'
+          texto: 'p-button-danger',
+          icono:'pi pi-trash'
         },
         {
           id: 'update',
-          texto: 'Actualizar'
+          texto: 'p-button-warning',
+          icono:'pi pi-pencil'
         }
       ]
     },
@@ -59,15 +66,18 @@ export class AdminService {
       acciones:[ 
         {
           id: 'save',
-          texto: 'Nuevo'
+          texto: '',
+          icono:'pi pi-plus'
         },
         {
           id: 'delete',
-          texto: 'Borrar'
+          texto: 'p-button-danger',
+          icono:'pi pi-trash'
         },
         {
           id: 'update',
-          texto: 'Actualizar'
+          texto: 'p-button-warning',
+          icono:'pi pi-pencil'
         }
       ]
     },
@@ -77,15 +87,18 @@ export class AdminService {
       acciones:[ 
         {
           id: 'save',
-          texto: 'Nuevo'
+          texto: '',
+          icono:'pi pi-plus'
         },
         {
           id: 'delete',
-          texto: 'Borrar'
+          texto: 'p-button-danger',
+          icono:'pi pi-trash'
         },
         {
           id: 'update',
-          texto: 'Actualizar'
+          texto: 'p-button-warning',
+          icono:'pi pi-pencil'
         }
       ]
     },

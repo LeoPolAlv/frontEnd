@@ -1,55 +1,10 @@
-<nav class="navbar navbar-expand-lg bg-light">
-    <div class="container-fluid">
-        <div class="col-1 ms-3">
-            <a class="navbar-brand" href="#">
-                <img src="../../../assets/images/ATOS.png" class="d-inline-block align-top" alt="">
-            </a>
-        </div>
-        <div class="col-7 ms-5 collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <!--<li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>-->
-                <li class="nav-item dropdown" *ngIf="role !== 'admin'">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Reservas
-                  </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" (click)="misReservas()">Mis Reservas</a></li>
-                        <li><a class="dropdown-item" (click)="nuevaReserva()">Gestionar Reserva</a></li>
-                        <li><a class="dropdown-item" href="#">Otra acción</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item pointer" (click)="logoOut()"><i class="bi bi-box-arrow-left me-3">   Salir</i></a></li>
-                    </ul>
-                </li>
-                <!--<li class="nav-item dropdown" *ngIf="role === 'admin'">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Administracion
-                  </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item">Oficinas</a></li>
-                        <li><a class="dropdown-item">Salas</a></li>
-                        <li><a class="dropdown-item">Equipamientos</a></li>
-                    </ul>
-                </li>-->
-                <!--<li class="nav-item">
-                    <a class="nav-link disabled">Disabled</a>
-                </li>-->
-            </ul>
-        </div>
-        <div class="col-3 ms-5">
-            <p>Usuario: <b> {{userToken}} </b></p>
-        </div>
-        <div class="col-1" *ngIf="role === 'admin'">
-            <button id="botonCard" mat-icon-button (click)="logoOut()">
-                <!--<mat-icon>more_vert</mat-icon>-->
-                <img mat-card-image src="../../../assets/images/Icons/salir.svg" class="botonSalir" />
-            </button>
-        </div>
-    </div>
-</nav>
+<p-menubar [model]="menu">
+    <!-- *ngIf="role === 'admin'">-->
+    <ng-template pTemplate="start">
+        <img src="../../../assets/images/ATOS.png" height="40" class="mr-2">
+    </ng-template>
+    <ng-template pTemplate="end">
+        <p>Usuario: <b> {{userToken}} </b></p>
+        <!--<input type="text" pInputText placeholder="Search">-->
+    </ng-template>
+</p-menubar>

@@ -7,11 +7,14 @@ import { AppComponent } from './app.component';
 import { LoginModule } from './login/login.module';
 import { NoFoundPageComponent } from './no-found-page/no-found-page.component';
 import { ReservasInterceptorService } from './interceptors/reservas.interceptor.service';
+import { PagesModule } from './pages/pages.module';
 
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { PagesModule } from './pages/pages.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       useFactory: adapterFactory,
     }),
     BrowserAnimationsModule,
+    CardModule,
+    ButtonModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, 

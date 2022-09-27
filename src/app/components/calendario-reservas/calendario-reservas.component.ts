@@ -604,15 +604,17 @@ export class CalendarioReservasComponent implements OnInit{
     this.reservasService.modifFechasReserva(nuevaData)
        .subscribe({
          next: (resp:any) => console.log('Respuesta de la actualizacion',resp),
-         error: (err: any) => console.log('Error al actualizar las fechas de la reserva. ', err)
+         error: (err: Error) => console.log('Error al actualizar las fechas de la reserva. ', err.message)
        });
   }
 
   deleteEvent(eventToDelete: CalendarEvent) {
-    this.events = this.events.filter((event) => event !== eventToDelete);
     this.reservasService.borrarReserva(eventToDelete.id)
-      .subscribe({
-        next: resp => console.log('Data devuelta por delete reserva: ', resp),
+    .subscribe({
+      next: resp => { 
+          console.log('Data devuelta por delete reserva: ', resp),
+          this.events = this.events.filter((event) => event !== eventToDelete);
+        },
         error: err => console.log('Error al borrar la reserva: ', err)
       });
   }

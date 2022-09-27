@@ -6,6 +6,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MaterialModule } from '../material.module';
+import {MenubarModule} from 'primeng/menubar';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { MaterialModule } from '../material.module';
     CommonModule,
     MatNativeDateModule,
     MaterialModule,
+    MenubarModule
   ],
   exports: [
     SidebarComponent,

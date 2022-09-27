@@ -1,38 +1,16 @@
-<mat-grid-list cols="8" rowHeight="1:1">
-    <mat-grid-tile *ngFor="let item of menu">
-        <mat-card class="card">
-            <mat-card-header>
-                <mat-card-title class="cardTitulo"> {{item.title}} </mat-card-title>
-                <!--<mat-card-subtitle> Subtitulos de la card </mat-card-subtitle>-->
-            </mat-card-header>
-            <mat-card-content>
-                <img mat-card-image [src]="item.img" class="img-card" />
-                <!--Contenido de la card-->
-            </mat-card-content>
-            <mat-divider></mat-divider>
-            <mat-card-actions>
-                <button id="botonCard" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                    <button mat-menu-item *ngFor="let boton of item.acciones">
-                      <mat-icon>{{boton.id}}</mat-icon>
-                      <span>{{boton.texto}}</span>
-                    </button>
-                </mat-menu>
-                <!--<div>
-                    <mat-grid-list cols={{item.acciones.length}} rowHeight="1:1">
-                        <mat-grid-tile *ngFor="let boton of item.acciones">
-                            <button mat-fab color={{boton.color}}>
-                            <mat-icon>{{boton.id}}</mat-icon>
-                        </button>
-                        </mat-grid-tile>
-                    </mat-grid-list>
-                </div>-->
-            </mat-card-actions>
-        </mat-card>
-    </mat-grid-tile>
-    <!--    <mat-grid-tile>2</mat-grid-tile>
-    <mat-grid-tile>3</mat-grid-tile>
-    <mat-grid-tile>4</mat-grid-tile>-->
-</mat-grid-list>
+<div class="grid p-3">
+    <div class="sm:col-12 md:col-6 lg:col-4 xl:col-3 " *ngFor="let item of menu">
+        <p-card [header]="item.title" subheader="" class="card surface-100" styleClass="p-card-shadow">
+            <ng-template pTemplate="title" class="flex justify-content-center">
+                <img alt="Card" [src]="item.img" class="flex justify-content-center pl-5 border-round h-5rem w-4 m-auto mt-4 " />
+            </ng-template>
+            <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!</p>-->
+            <ng-template pTemplate="content">
+                <button #boton *ngFor="let boton of item.acciones" (click)="onclick(item,boton)" pButton pRipple type="button" [icon]="boton.icono" class="p-button-rounded p-button-outlined ml-3 mt-0" [ngClass]="boton.texto"></button>
+            </ng-template>
+            <!--<ng-template pTemplate="footer">
+                <button *ngFor="let boton of item.acciones" pButton pRipple type="button" [icon]="boton.icono" class="p-button-rounded p-button-outlined ml-3 mt-0" [ngClass]="boton.texto"></button>
+            </ng-template>-->
+        </p-card>
+    </div>
+</div>

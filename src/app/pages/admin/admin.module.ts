@@ -6,6 +6,8 @@ import { GestionOficinasComponent } from './gestion-oficinas/gestion-oficinas.co
 import { AdminDashboardComponent } from './admin-dashboard.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MaterialModule } from 'src/app/material.module';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
 
 
 @NgModule({
@@ -18,6 +20,8 @@ import { MaterialModule } from 'src/app/material.module';
     AdminRoutingModule,
     MatNativeDateModule,
     MaterialModule,
+    CardModule,
+    ButtonModule,
   ]
 })
 export class AdminModule { }

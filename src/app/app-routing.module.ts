@@ -7,7 +7,7 @@ import { NoFoundPageComponent } from './no-found-page/no-found-page.component';
 import { NoAutorizadoComponent } from './no-autorizado/no-autorizado.component';
 
 const routes: Routes = [
-  //{ path: '', pathMatch: 'full', redirectTo: '/main' },
+  { path: '', pathMatch: 'full', redirectTo: '/login' },
   //{ path: 'admin', pathMatch: 'full', redirectTo: '/admin' },
   { path: 'noauth', component: NoAutorizadoComponent },
   { path: '**', component: NoFoundPageComponent },
