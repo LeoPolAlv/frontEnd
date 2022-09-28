@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -15,6 +15,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
+import { GlobalErrorHandler } from './controlErrores/global-error-handler';
+import { NotificadorErrorService } from './services/errors/notificador-error.service';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,7 @@ import { ButtonModule } from 'primeng/button';
       useClass: ReservasInterceptorService, 
       multi: true
     },
+    { provide: ErrorHandler, useClass: GlobalErrorHandler }
   ],
   bootstrap: [AppComponent]
 })

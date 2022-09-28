@@ -19,15 +19,8 @@
                             <label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox" formControlName="recuerda"></span></label><br><br>
                             <button type="submit" class="boton btn btn-md text-uppercase btn-rounded">Login</button>
                         </div>
-
-                        <!--<div id="register-link" class="text-right">
-                            <a href="#" class="text-info">Register here</a>
-                        </div>-->
                     </form>
-                    <div class="alert alert-danger alert-dismissible" role="alert" *ngIf="error">
-                        {{mensajeError}}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
+                    <p-toast position="top-center" key="tc"></p-toast>
                 </div>
             </div>
         </div>

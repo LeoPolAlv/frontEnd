@@ -1,34 +1,37 @@
-import { Component, ErrorHandler, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../../services/login.service';
 import { LoginUsuario } from '../../models/login.model';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  providers: [MessageService]
 })
 export class LoginComponent implements OnInit {
 
   public formLogin!: FormGroup;
 
-  public error!: boolean;
-  public mensajeError!: string;
+  //public error!: boolean;
+  //public mensajeError!: string;
 
   constructor(
     private fb:FormBuilder,
     private loginService: LoginService,
     private usuarioService: UsuarioService,
-    private router:Router,
+    private router: Router,
+    private messageService: MessageService,
   ) {
     this.inicializarForm();
    }
 
   ngOnInit(): void {
-    this.error = false;
-    this.mensajeError = ''
+    //this.error = false;
+    //this.mensajeError = ''
     this.inicializarForm();
   }
 
@@ -41,19 +44,21 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    this.error = false;
-    const loginUser = new LoginUsuario(this.formLogin.get('username')?.value,this.formLogin.get('password')?.value)
+    //this.error = false;
+    const loginUser = new LoginUsuario(this.formLogin.get('username')?.value, this.formLogin.get('password')?.value)
+    
     this.loginService.login(loginUser).subscribe(({
       next: async (resp: any) => { 
         //console.log('Respuesta del Login: ', resp);
         this.usuarioService.setToken(resp.token);
         //localStorage.setItem('TKResSl', resp.token); 
-        
       },
       error: (err) => {
-        console.log('Error en LOGIN: ', err);
-        this.mensajeError = err;
-        this.error = true;
+        this.messageService.add({key: 'tc', severity:'error', summary: 'Error', detail: err});
+        //console.log('Error en LOGIN: ', err);
+        //throw new Error(err);
+        //this.mensajeError = err;
+        //this.error = false;
       },
       complete: () => {
         if (this.formLogin.get('recuerda')?.value){
